@@ -1,47 +1,52 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@include('header')
+@include('Component.alert')
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+<div class="container">
+    <div class="row my-5 d-flex justify-content-center">
+        <div class="col-12" style="max-width:400px">
+            <h5 style="font-size:20px;color:#65031D;margin-left:-20px;" class="fw-semibold d-flex align-items-center"><img src="{{ asset('image/Logo.png') }}" alt="Logo" height="60px" class="d-inline-block align-text-top"> Pilar Utama</h5>
+            <p style="font-size:20px;" class="fw-semibold">Login to your admin account</p>
+            <p style="font-size:12px;" class="fw-medium opacity-50">Selamat datang, silahkan masukkan password dan email untuk mengakses halaman admin</p>
+            <form action="{{route('login')}}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <input type="email" name="email" class="form-control border-2 rounded-1 w-100 bg-transparent" style="border-color:#65031D;" id="exampleInputEmail1" aria-describedby="emailHelp" style="font-size:10px;" placeholder="Masukkan email" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" name="password" class="form-control border-2 rounded-1 w-100 bg-transparent" style="border-color:#65031D;" id="exampleInputPassword1" style="font-size:10px;" placeholder="Masukkan Password" required>
+                </div>
+                <p style="font-size:12px;color:#65031D;" class="fw-semibold mt-2 text-end">Forgot Password</p>
+                <button type="submit" class="btn" style="width:100%;background-color:#65031D;color:#EEEBE5">Submit</button>
+            </form>
         </div>
+    </div>
+</div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+@if(session('logout_success'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('logout_success') }}", "success");
+        });
+    </script>
+@endif
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+@if(session('error'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('error') }}", "danger");
+        });
+    </script>
+@endif
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+
+
+
+
+
+

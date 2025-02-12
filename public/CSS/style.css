@@ -1,0 +1,290 @@
+/* responsive */
+
+.custom-font-h1{
+    font-size:73px;
+    line-height: 0.9;
+}
+
+.custom-font-h2{
+    font-size:17px;
+    color:#65031D;
+    line-height: 1.2;
+    margin-top:40px
+}
+
+.custom-font-h3{
+    font-size:10px;
+}
+
+.custom-font-h4{
+    font-size:74px;
+    line-height: 0.4;
+}
+
+.noHp{
+    font-size:138px;
+}
+
+@media (max-width: 1200px) { 
+    .custom-font-h1 {
+        font-size: 61px;
+    }
+
+    .custom-font-h2 {
+        font-size: 15px;
+        margin-top: 33px;
+    }
+    .custom-font-h4 {
+        font-size: 62px;
+    }
+
+    .noHp{
+        font-size:115px;
+    }
+}
+
+@media (max-width: 993px) { 
+    .custom-font-h1 {
+        font-size: 60px;
+    }
+
+    .custom-font-h2 {
+        font-size: 12px;
+        margin-top: 30px;
+    }
+
+    .custom-font-h3 {
+        font-size: 8px;
+    }
+    .custom-font-h4 {
+        font-size: 60px;
+        line-height: 0;
+    }
+
+    .noHp{
+        font-size:86px;
+    }
+}
+
+@media (max-width: 992px) { 
+    .custom-font-h1 {
+        font-size: 45px;
+    }
+
+    .custom-font-h2 {
+        font-size: 12px;
+    }
+
+    .custom-font-h3 {
+        font-size: 8px;
+    }
+    .custom-font-h4 {
+        font-size: 45px;
+    }
+}
+
+@media (max-width: 768px) { 
+    .custom-font-h1 {
+        font-size: 34px;
+    }
+    .custom-font-h2 {
+        font-size: 9px;
+        margin-top: 28px;
+    }
+    .custom-font-h3 {
+        font-size: 6px;
+    }
+    .custom-font-h4 {
+        font-size: 34px;
+    }
+    .noHp{
+        font-size:85px;
+    }
+}
+
+@media (max-width: 540px) { 
+    .noHp{
+        font-size:63px;
+    }
+}
+
+@media (max-width: 534px) { 
+    .custom-font-h1 {
+        font-size: 33px;
+    }
+    .custom-font-h2 {
+        font-size: 9px;
+    }
+
+    .custom-font-h4 {
+        font-size: 33px;
+    }
+
+    .noHp{
+        font-size:62px;
+    }
+}
+
+@media (max-width: 534px) { 
+    .custom-font-h1 {
+        font-size: 33px;
+    }
+    .custom-font-h2 {
+        font-size: 9px;
+    }
+
+    .custom-font-h4 {
+        font-size: 33px;
+    }
+
+    .noHp{
+        font-size:61px;
+    }
+}
+
+@media (max-width: 518px) { 
+    .custom-font-h1 {
+        font-size: 32px;
+    }
+
+    .custom-font-h4 {
+        font-size: 32px;
+    }
+
+    .noHp{
+        font-size:59px;
+    }
+}
+
+@media (max-width: 503px) { 
+    .custom-font-h1 {
+        font-size: 31px;
+    }
+
+    .custom-font-h4 {
+        font-size: 31px;
+    }
+    .noHp{
+        font-size:58px;
+    }
+}
+
+@media (max-width: 491px) { 
+    .custom-font-h1 {
+        font-size: 30px;
+    }
+    .custom-font-h2 {
+        font-size: 7px;
+    }
+
+    .custom-font-h4 {
+        font-size: 30px;
+    }
+
+    .noHp{
+        font-size:57px;
+    }
+}
+@media (max-width: 469px) { 
+    .custom-font-h1 {
+        font-size: 29px;
+    }
+
+    .custom-font-h4 {
+        font-size: 29px;
+    }
+}
+
+@media (max-width: 484px) { 
+    .noHp{
+        font-size:54px;
+    }
+}
+
+@media (max-width: 467px) { 
+    .custom-font-h1 {
+        font-size: 28px;
+    }
+
+    .custom-font-h4 {
+        font-size: 28px;
+    }
+
+    .noHp{
+        font-size:53px;
+    }
+}
+
+@media (max-width: 450px) { 
+    .noHp{
+        font-size:52px;
+    }
+}
+@media (max-width: 429px) { 
+    .custom-font-h1 {
+        font-size: 25px;
+    }
+
+    .custom-font-h4 {
+        font-size: 26px;
+    }
+
+    .noHp{
+        font-size:48px;
+    }
+}
+@media (max-width: 412px) { 
+    .custom-font-h1 {
+        font-size: 25px;
+    }
+
+    .custom-font-h4 {
+        font-size: 25px;
+    }
+    .noHp{
+        font-size:48px;
+    }
+}
+
+@media (max-width: 391px) { 
+    .custom-font-h1 {
+        font-size: 23px;
+    }
+
+    .custom-font-h4 {
+        font-size: 24px;
+    }
+    .noHp{
+        font-size:44px;
+    }
+}
+/* @media (max-width: 385px) { 
+    .custom-font-h1 {
+        font-size: 24px;
+    }
+} */
+@media (max-width: 376px) { 
+    .custom-font-h1 {
+        font-size: 23px;
+    }
+
+    .custom-font-h4 {
+        font-size: 23px;
+    }
+    .noHp{
+        font-size:43px;
+    }
+}
+@media (max-width: 361px) { 
+    .custom-font-h1 {
+        font-size: 22px;
+    }
+
+    .custom-font-h4 {
+        font-size: 22px;
+    }
+
+    .noHp{
+        font-size:41px;
+    }
+}
