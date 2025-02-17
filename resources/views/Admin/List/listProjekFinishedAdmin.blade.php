@@ -3,7 +3,7 @@
 <div class="container mt-1">
     <div class="row">
         <div class="col-md-6 col-lg-8 d-none d-md-block">
-            <h1 style="color:#65031D;">PILAR UTAMA</h1>
+            <h1 style="color:#65031D;">Finished project</h1>
         </div>
         <div class="col-12 col-md-6 col-lg-4 px-0">
             <div class="row g-1 mx-0 w-100 d-flex align-items-center"> 

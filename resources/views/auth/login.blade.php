@@ -16,7 +16,9 @@
                 <div class="mb-3">
                     <input type="password" name="password" class="form-control border-2 rounded-1 w-100 bg-transparent" style="border-color:#65031D;" id="exampleInputPassword1" style="font-size:10px;" placeholder="Masukkan Password" required>
                 </div>
-                <p style="font-size:12px;color:#65031D;" class="fw-semibold mt-2 text-end">Forgot Password</p>
+                <a href="{{route('password.request')}}">
+                    <p style="font-size:12px;color:#65031D;" class="fw-semibold mt-2 text-end">Forgot Password</p>
+                </a>
                 <button type="submit" class="btn" style="width:100%;background-color:#65031D;color:#EEEBE5">Submit</button>
             </form>
         </div>
@@ -35,6 +37,14 @@
     </script>
 @endif
 
+@if(session('status'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('status') }}", "success");
+        });
+    </script>
+@endif
+
 @if(session('error'))
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -42,11 +52,3 @@
         });
     </script>
 @endif
-
-
-
-
-
-
-
-

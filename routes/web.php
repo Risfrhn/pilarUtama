@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('Auth.register');
-// });
+
+Route::get('/', [UserController::class, 'showLandingPageUser'])->name('dashboardUser.view');
 
 
 # auth 
@@ -18,21 +18,22 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login.form');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 ## logout
 route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+## forgot password
+Route::get('/forgot-password', [AuthController::class, 'forgotPassForm'])->name('password.request');
+
+Route::post('/forgot-password', [AuthController::class, 'resetPassLink'])->name('password.email');
+
+Route::get('/reset-password/{token}', [AuthController::class, 'newPassForm'])->name('password.reset');
+
+Route::post('/reset-password', [AuthController::class, 'newPass'])->name('password.update');
 
 
 # Admin
 ## landingPage
 Route::get('/dashboardAdmin', [AdminController::class, 'showLandingPageAdmin'])->middleware('auth')->name('dashboardAdmin.view');
 
+Route::put('/update', [AdminController::class, 'update'])->middleware('auth')->name('update');
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
 
-// require __DIR__.'/auth.php';
+

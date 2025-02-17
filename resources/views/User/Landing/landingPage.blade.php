@@ -1,6 +1,7 @@
 @include('header')
+@include('Component.alert')
 
-
+@foreach($modalData as $item)
 <!-- halaman utama -->
 <div class="container" id="halaman-utama">
     <div class="row g-0 fw-semibold">
@@ -21,8 +22,7 @@
     </div>
     
 </div>
-<img src="{{ asset('image/hero.png') }}" class="img-fluid mb-5" alt="Deskripsi Gambar">
-
+<img src="{{ $item->flyer_image }}" class="img-fluid mb-5" alt="Deskripsi Gambar">
 
 <!-- tentang kami -->
 <div class="container mt-5 mb-5" id="tentang-kami">
@@ -32,14 +32,14 @@
         <div class="col-auto fw-medium" style="font-size:12px; text-align:justify">
             <p class="mb-0 fst-italic">information</p>
             <p class="aboutUs" style="font-size:50px">About Us</p>
-            <p style="max-width: 400px;">>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore qui quaerat animi enim magnam molestiae vel totam suscipit quas. Ullam, veritatis deserunt repellat odio corrupti consequatur cupiditate qui libero temporibus provident explicabo cumque doloremque quam, molestias animi enim doloribus quibusdam?</p>
-            <img src="{{ asset('image/aboutUs.jpg') }}" class="img-fluid mb-4" width="400px" alt="Deskripsi Gambar">
-            <p class="fw-light" style="font-size:12px;max-width: 400px; text-align:left; line-height:1.3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas, eveniet eum aperiam at non labore. Voluptate perferendis eveniet omnis! Incidunt voluptas consectetur sapiente! Reiciendis nemo amet accusamus porro harum non dolorem optio vel? Quos fuga provident, et consequatur temporibus at pariatur odio incidunt sapiente quidem cupiditate, doloremque alias ipsam harum. Impedit ipsam qui laboriosam voluptate, at deleniti facere odit fugit commodi. Similique, aliquid iusto recusandae dicta ab dignissimos quae reprehenderit.</p>
+            <p style="max-width: 400px;">{{ $item->about_us_desk1 }}</p>
+            <img src="{{ $item->about_us_image }}" class="img-fluid mb-4" width="400px" alt="Deskripsi Gambar">
+            <p class="fw-light" style="font-size:12px;max-width: 400px; text-align:left; line-height:1.3">{{ $item->about_us_desk2 }}</p>
         </div>
     </div>
 </div>
 
-
+<!-- layanan -->
 <div class="container mt-5 mb-5" id="layanan">
     <h1 style="color:#65031D;">Why Us?</h1>
     <div class="w-100 border border-1 border-dark"></div>
@@ -47,48 +47,48 @@
         <h1 class="mb-0 fst-italic">Our</h1>
         <p class="aboutUs" style="font-size:50px">Services</p>
         <div class="col-12 col-lg-3">
-            <img id="layananImage" src="{{ asset('image/gambar1.jpg') }}" class="img-fluid mb-5" alt="Service Image">
+            <img id="layananImage" src="{{ $item->architectur_image }}" class="img-fluid mb-5" alt="Service Image">
         </div>
         <div class="col-lg-3 mb-lg-0 mb-5">
             <ul class="nav flex-column" id="serviceTabs">
                 <li class="nav-item">
-                    <a class="nav-link layanan text-dark fw-medium active" href="#" data-image="{{ asset('image/gambar1.jpg') }}" data-target="desc-architectur">Architectur</a>
+                    <a class="nav-link layanan text-dark fw-medium active" href="#" data-image="{{ $item->architectur_image }}" data-target="desc-architectur">Architecture</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ asset('image/gambar2.jpg') }}" data-target="desc-interior">Interior</a>
+                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ $item->interior_image }}" data-target="desc-interior">Interior</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ asset('image/gambar3.jpg') }}" data-target="desc-landscape">Landscape</a>
+                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ $item->landscape_image }}" data-target="desc-landscape">Landscape</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ asset('image/gambar4.jpg') }}" data-target="desc-renovation">Renovation</a>
+                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ $item->renovation_image }}" data-target="desc-renovation">Renovation</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ asset('image/gambar5.jpg') }}" data-target="desc-comercialBuild">Commercial Build</a>
+                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ $item->comercial_build_image }}" data-target="desc-comercialBuild">Commercial Build</a>
                 </li>
             </ul>
         </div>
         <div class="col-lg-6 col-12 text-lg-start text-center">
             <div class="tab-content w-100" id="contentContainer">
                 <div id="desc-architectur" class="tab-pane fade show active">
-                    <p class="fw-semibold" style="color:#65031D;">Concept development</p>
-                    <p class="desc-text" style="font-size:12px;">Architectural design description goes here.</p>
+                    <p class="fw-semibold" style="color:#65031D;">Architecture</p>
+                    <p class="desc-text" style="font-size:12px;">{{ $item->architectur_desk }}</p>
                 </div>
                 <div id="desc-interior" class="tab-pane fade">
-                    <p class="fw-semibold">Concept development</p>
-                    <p class="desc-text" style="font-size:12px;">Interior design description goes here.</p>
+                    <p class="fw-semibold">Interior</p>
+                    <p class="desc-text" style="font-size:12px;">{{ $item->interior_desk }}</p>
                 </div>
                 <div id="desc-landscape" class="tab-pane fade">
-                    <p class="fw-semibold">Concept development</p>
-                    <p class="desc-text" style="font-size:12px;">Landscape design description goes here.</p>
+                    <p class="fw-semibold">Landscape</p>
+                    <p class="desc-text" style="font-size:12px;">{{ $item->landscape_desk }}</p>
                 </div>
                 <div id="desc-renovation" class="tab-pane fade">
-                    <p class="fw-semibold">Concept development</p>
-                    <p class="desc-text" style="font-size:12px;">Renovation description goes here.</p>
+                    <p class="fw-semibold">Renovation</p>
+                    <p class="desc-text" style="font-size:12px;">{{ $item->renovation_desk }}</p>
                 </div>
                 <div id="desc-comercialBuild" class="tab-pane fade">
-                    <p class="fw-semibold">Concept development</p>
-                    <p class="desc-text" style="font-size:12px;">Commercial Build description goes here.</p>
+                    <p class="fw-semibold">Commercial build</p>
+                    <p class="desc-text" style="font-size:12px;">{{ $item->comercial_build_desk }}</p>
                 </div>
             </div>
         </div>
@@ -142,38 +142,9 @@
     </h3>
     <h1 class="noHp">0851-8333-4971</h1>
 </div>
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let activeTab = "desc-architectur";
-        document.querySelectorAll(".layanan").forEach(tab => {
-            tab.addEventListener("click", function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute("data-target");
-                const targetContent = document.getElementById(targetId);
-                const imageSrc = this.getAttribute("data-image");
-                
-                if (activeTab === targetId) return;
-                
-                document.querySelectorAll(".tab-pane").forEach(content => {
-                    content.classList.remove("show", "active");
-                });
-                document.querySelectorAll(".layanan").forEach(link => {
-                    link.classList.remove("active");
-                });
-                
-                targetContent.classList.add("show", "active");
-                this.classList.add("active");
-                document.getElementById("layananImage").src = imageSrc;
-                activeTab = targetId;
-            });
-        });
-    });
-</script>
+@endforeach
 
 @include('footer')
-
 
 
 

@@ -29,7 +29,7 @@
 <body class="d-flex flex-column min-vh-100" style="background-color: #EEEBE5">
     
     <!-- Navbar -->
-    @if (!Request::is('Auth.login'))
+    @if (!Request::is('login') && !Request::is('register') && !Request::is('forgot-password') && !Request::is('reset-password/{token}') && !Request::is('reset-password/*'))
         <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #EEEBE5; font-size:12px">
             <div class="container d-flex justify-content-between align-items-center">
                 <a class="navbar-brand" style="font-size:10px;" href="#">
@@ -60,6 +60,16 @@
                 <a href="#" class="text-decoration-none text-dark d-none d-lg-block">Indonesia, Kalimantan Timur</a>
             </div>
         </nav>
+    @else
+        <!-- Hanya Logo untuk Halaman Login -->
+        <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #EEEBE5; font-size:12px">
+            <div class="container d-flex justify-content-between align-items-center">
+                <a class="navbar-brand" style="font-size:10px;" href="#">
+                    <img src="{{ asset('image/Logo.png') }}" alt="Logo" height="60px" class="d-inline-block align-text-top"> 
+                </a>
+            </div>
+        </nav>
     @endif
+
     <main class="flex-grow-1">
         

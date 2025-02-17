@@ -1,6 +1,7 @@
 @include('header')
 @include('Component.alert')
 
+@foreach($modalData as $item)
 <!-- halaman utama -->
 <div class="container" id="halaman-utama">
     <div class="row g-0 fw-semibold">
@@ -21,8 +22,7 @@
     </div>
     
 </div>
-<img src="{{ asset('image/hero.png') }}" class="img-fluid mb-5" alt="Deskripsi Gambar">
-
+<img src="{{ $item->flyer_image }}" class="img-fluid mb-5" alt="Deskripsi Gambar">
 
 <!-- tentang kami -->
 <div class="container mt-5 mb-5" id="tentang-kami">
@@ -32,63 +32,63 @@
         <div class="col-auto fw-medium" style="font-size:12px; text-align:justify">
             <p class="mb-0 fst-italic">information</p>
             <p class="aboutUs" style="font-size:50px">About Us</p>
-            <p style="max-width: 400px;">>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore qui quaerat animi enim magnam molestiae vel totam suscipit quas. Ullam, veritatis deserunt repellat odio corrupti consequatur cupiditate qui libero temporibus provident explicabo cumque doloremque quam, molestias animi enim doloribus quibusdam?</p>
-            <img src="{{ asset('image/aboutUs.jpg') }}" class="img-fluid mb-4" width="400px" alt="Deskripsi Gambar">
-            <p class="fw-light" style="font-size:12px;max-width: 400px; text-align:left; line-height:1.3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas, eveniet eum aperiam at non labore. Voluptate perferendis eveniet omnis! Incidunt voluptas consectetur sapiente! Reiciendis nemo amet accusamus porro harum non dolorem optio vel? Quos fuga provident, et consequatur temporibus at pariatur odio incidunt sapiente quidem cupiditate, doloremque alias ipsam harum. Impedit ipsam qui laboriosam voluptate, at deleniti facere odit fugit commodi. Similique, aliquid iusto recusandae dicta ab dignissimos quae reprehenderit.</p>
+            <p style="max-width: 400px;">{{ $item->about_us_desk1 }}</p>
+            <img src="{{ $item->about_us_image }}" class="img-fluid mb-4" width="400px" alt="Deskripsi Gambar">
+            <p class="fw-light" style="font-size:12px;max-width: 400px; text-align:left; line-height:1.3">{{ $item->about_us_desk2 }}</p>
         </div>
     </div>
 </div>
 
-
+<!-- layanan -->
 <div class="container mt-5 mb-5" id="layanan">
     <h1 style="color:#65031D;">Why Us?</h1>
     <div class="w-100 border border-1 border-dark"></div>
     <div class="row mt-5" style="line-height:1.2">
         <h1 class="mb-0 fst-italic">Our</h1>
         <p class="aboutUs" style="font-size:50px">Services</p>
-        <div class="col-12 col-lg-3">
-            <img id="layananImage" src="{{ asset('image/gambar1.jpg') }}" class="img-fluid mb-5" alt="Service Image">
+        <div class="col-12 col-lg-3 d-flex justify-content-center">
+            <img id="layananImage" src="{{ $item->architectur_image }}" class="img-fluid mb-5" alt="Service Image">
         </div>
-        <div class="col-lg-3 mb-lg-0 mb-5">
-            <ul class="nav flex-column" id="serviceTabs">
+        <div class="col-lg-2 mb-lg-0 mb-2">
+            <ul class="nav flex-lg-column flex-row justify-content-center" id="serviceTabs">
                 <li class="nav-item">
-                    <a class="nav-link layanan text-dark fw-medium active" href="#" data-image="{{ asset('image/gambar1.jpg') }}" data-target="desc-architectur">Architectur</a>
+                    <a class="nav-link layanan text-dark fw-medium active" href="#" data-image="{{ $item->architectur_image }}" data-target="desc-architectur">Architecture</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ asset('image/gambar2.jpg') }}" data-target="desc-interior">Interior</a>
+                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ $item->interior_image }}" data-target="desc-interior">Interior</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ asset('image/gambar3.jpg') }}" data-target="desc-landscape">Landscape</a>
+                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ $item->landscape_image }}" data-target="desc-landscape">Landscape</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ asset('image/gambar4.jpg') }}" data-target="desc-renovation">Renovation</a>
+                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ $item->renovation_image }}" data-target="desc-renovation">Renovation</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ asset('image/gambar5.jpg') }}" data-target="desc-comercialBuild">Commercial Build</a>
+                    <a class="nav-link layanan text-dark fw-medium" href="#" data-image="{{ $item->comercial_build_image }}" data-target="desc-comercialBuild">Commercial Build</a>
                 </li>
             </ul>
         </div>
-        <div class="col-lg-6 col-12 text-lg-start text-center">
+        <div class="col-lg-7 col-12 text-lg-start text-center">
             <div class="tab-content w-100" id="contentContainer">
                 <div id="desc-architectur" class="tab-pane fade show active">
-                    <p class="fw-semibold" style="color:#65031D;">Concept development</p>
-                    <p class="desc-text" style="font-size:12px;">Architectural design description goes here.</p>
+                    <p class="fw-semibold" style="color:#65031D;">Architecture</p>
+                    <p class="desc-text" style="font-size:12px;">{{ $item->architectur_desk }}</p>
                 </div>
                 <div id="desc-interior" class="tab-pane fade">
-                    <p class="fw-semibold">Concept development</p>
-                    <p class="desc-text" style="font-size:12px;">Interior design description goes here.</p>
+                    <p class="fw-semibold">Interior</p>
+                    <p class="desc-text" style="font-size:12px;">{{ $item->interior_desk }}</p>
                 </div>
                 <div id="desc-landscape" class="tab-pane fade">
-                    <p class="fw-semibold">Concept development</p>
-                    <p class="desc-text" style="font-size:12px;">Landscape design description goes here.</p>
+                    <p class="fw-semibold">Landscape</p>
+                    <p class="desc-text" style="font-size:12px;">{{ $item->landscape_desk }}</p>
                 </div>
                 <div id="desc-renovation" class="tab-pane fade">
-                    <p class="fw-semibold">Concept development</p>
-                    <p class="desc-text" style="font-size:12px;">Renovation description goes here.</p>
+                    <p class="fw-semibold">Renovation</p>
+                    <p class="desc-text" style="font-size:12px;">{{ $item->renovation_desk }}</p>
                 </div>
                 <div id="desc-comercialBuild" class="tab-pane fade">
-                    <p class="fw-semibold">Concept development</p>
-                    <p class="desc-text" style="font-size:12px;">Commercial Build description goes here.</p>
+                    <p class="fw-semibold">Commercial build</p>
+                    <p class="desc-text" style="font-size:12px;">{{ $item->comercial_build_desk }}</p>
                 </div>
             </div>
         </div>
@@ -103,28 +103,36 @@
     <div class="container mt-5">
         <div class="row text-center ">
             <div class="col-6 col-lg-3 g-2">
-                <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                    <h3 class="mt-3" style="color:#65031D;">20+</h3>
-                    <p>Finished Projects</p>
-                </div>
+                <a href="" style="text-decoration:none;color:black;">
+                    <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
+                        <h3 class="mt-3" style="color:#65031D;">20+</h3>
+                        <p>Finished Projects</p>
+                    </div>
+                </a>
             </div>
             <div class="col-6 col-lg-3 g-2">
-                <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                    <h3 class="mt-3" style="color:#65031D;">20+</h3>
-                    <p>On Going Projects</p>
-                </div>
+                <a href="" style="text-decoration:none;color:black;">
+                    <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
+                        <h3 class="mt-3" style="color:#65031D;">20+</h3>
+                        <p>On Going Projects</p>
+                    </div>
+                </a>
             </div>
             <div class="col-6 col-lg-3 g-2">
-                <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                    <h3 class="mt-3" style="color:#65031D;">20+</h3>
-                    <p>Projects Being Design</p>
-                </div>
+                <a href="" style="text-decoration:none;color:black;">
+                    <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
+                        <h3 class="mt-3" style="color:#65031D;">20+</h3>
+                        <p>Projects Being Design</p>
+                    </div>
+                </a>
             </div>
             <div class="col-6 col-lg-3 g-2">
-                <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                    <h3 class="mt-3" style="color:#65031D;">20+</h3>
-                    <p>Negotiation Stages</p>
-                </div>
+                <a href="" style="text-decoration:none;color:black;">
+                    <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
+                        <h3 class="mt-3" style="color:#65031D;">20+</h3>
+                        <p>Negotiation Stages</p>
+                    </div>
+                </a>
             </div>
         </div>    
     </div>
@@ -142,6 +150,7 @@
     </h3>
     <h1 class="noHp">0851-8333-4971</h1>
 </div>
+@endforeach
 
 <button type="button" class="btn btn-lg position-fixed bottom-0  end-0 m-5" style="background-color:#65031D;color:#EEEBE5" data-bs-toggle="modal" data-bs-target="#editModal">
     <i class="bi bi-pencil"></i>
@@ -152,6 +161,159 @@
         <i class="bi bi-door-open-fill"></i>
     </button>
 </form>
+
+
+
+<!-- modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="{{route('update')}}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Nav pills -->
+                    <ul class="nav nav-pills" id="modalTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="tab1-tab" data-bs-toggle="pill" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Flyer</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="tab2-tab" data-bs-toggle="pill" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">About Us</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="tab3-tab" data-bs-toggle="pill" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Layanan</a>
+                    </li>
+                    </ul>
+
+                    <!-- Tab content -->
+                        <div class="tab-content mt-3" id="modalTabContent">
+                            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                                <div class="mb-3">
+                                    <label for="imageInput" class="form-label">Masukkan gambar flyer</label>
+                                    <input type="file" class="form-control" id="imageInput" name="imageflyer" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <img id="previewImage" src="{{ asset($item->flyer_image) }}" alt="Image Preview" class="img-fluid">
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                                <!-- Input untuk Desk 1 -->
+                                <div class="mb-3">
+                                    <label for="desk1" class="form-label">Desk 1</label>
+                                    <textarea id="desk1" name="desk1" class="form-control" rows="3">{{ $item->about_us_desk1 }}</textarea>
+                                </div>
+
+                                <!-- Input untuk Gambar About Us -->
+                                <div class="mb-3">
+                                    <label for="gambarAboutUs" class="form-label">Upload Gambar About Us</label>
+                                    <input type="file" id="gambarAboutUs" name="gambarAboutUs" class="form-control" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <img id="previewImage" src="{{ asset($item->about_us_image) }}" alt="Image Preview" class="img-fluid">
+                                </div>
+
+                                <!-- Input untuk Desk 2 -->
+                                <div class="mb-3">
+                                    <label for="desk2" class="form-label">Desk 2</label>
+                                    <textarea id="desk2" name="desk2" class="form-control" rows="3">{{ $item->about_us_desk2}}</textarea>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                                <!-- Arsitektur -->
+                                <div class="mb-4">
+                                    <h5>Arsitektur</h5>
+                                    <div class="mb-3">
+                                        <label for="architecturDesk" class="form-label">Deskripsi Arsitektur</label>
+                                        <textarea id="architecturDesk" name="architectur_desk" class="form-control" rows="3">{{ $item->architectur_desk}}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="architecturImage" class="form-label">Upload Gambar Arsitektur</label>
+                                        <input type="file" id="architecturImage" name="architecturImage" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <img id="architecturPreviewImage" src="{{ asset($item->architectur_image)}}" alt="Image Preview" class="img-fluid">
+                                    </div>
+                                </div>
+
+                                <!-- Interior -->
+                                <div class="mb-4">
+                                    <h5>Interior</h5>
+                                    <div class="mb-3">
+                                        <label for="interiorDesk" class="form-label">Deskripsi Interior</label>
+                                        <textarea id="interiorDesk" name="interior_desk" class="form-control" rows="3">{{ $item->interior_desk}}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="interiorImage" class="form-label">Upload Gambar Interior</label>
+                                        <input type="file" id="interiorImage" name="interiorImage" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <img id="interiorPreviewImage" src="{{ asset($item->interior_image) }}" alt="Image Preview" class="img-fluid">
+                                    </div>
+                                </div>
+
+                                <!-- Landscape -->
+                                <div class="mb-4">
+                                    <h5>Landscape</h5>
+                                    <div class="mb-3">
+                                        <label for="landscapeDesk" class="form-label">Deskripsi Landscape</label>
+                                        <textarea id="landscapeDesk" name="landscape_desk" class="form-control" rows="3">{{ $item->landscape_desk}}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="landscapeImage" class="form-label">Upload Gambar Landscape</label>
+                                        <input type="file" id="landscapeImage" name="landscapeImage" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <img id="landscapePreviewImage" src="{{ asset($item->landscape_image) }}" alt="Image Preview" class="img-fluid">
+                                    </div>
+                                </div>
+
+                                <!-- Renovasi -->
+                                <div class="mb-4">
+                                    <h5>Renovasi</h5>
+                                    <div class="mb-3">
+                                        <label for="renovationDesk" class="form-label">Deskripsi Renovasi</label>
+                                        <textarea id="renovationDesk" name="renovation_desk" class="form-control" rows="3">{{ $item->renovation_desk}}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="renovationImage" class="form-label">Upload Gambar Renovasi</label>
+                                        <input type="file" id="renovationImage" name="renovationImage" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <img id="renovationPreviewImage" src="{{ asset($item->renovation_image) }}" alt="Image Preview" class="img-fluid">
+                                    </div>
+                                </div>
+
+                                <!-- Commercial Build -->
+                                <div class="mb-4">
+                                    <h5>Commercial Build</h5>
+                                    <div class="mb-3">
+                                        <label for="comercialBuildDesk" class="form-label">Deskripsi Commercial Build</label>
+                                        <textarea id="comercialBuildDesk" name="comercial_build_desk" class="form-control" rows="3">{{ $item->comercial_build_desk}}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="comercialBuildImage" class="form-label">Upload Gambar Commercial Build</label>
+                                        <input type="file" id="comercialBuildImage" name="comercialBuildImage" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <img id="comercialBuildPreviewImage" src="{{ asset($item->comercial_build_image) }}" alt="Image Preview" class="img-fluid">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 
@@ -191,8 +353,31 @@
     </script>
 @endif
 
-@include('footer')
+@if(session('error'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('error') }}", "danger");
+        });
+    </script>
+@endif
 
+@if(session('success'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('success') }}", "success");
+        });
+    </script>
+@endif
+
+@if(session('info'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('info') }}", "info");
+        });
+    </script>
+@endif
+
+@include('footer')
 
 
 

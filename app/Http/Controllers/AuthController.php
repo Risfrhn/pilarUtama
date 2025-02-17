@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
+
 
 
 class AuthController extends Controller
@@ -74,5 +76,71 @@ class AuthController extends Controller
         $request->session()->regenerateToken();  
 
         return redirect()->route('login')->with('logout_success', 'Anda telah berhasil logout.'); 
+    }
+
+
+     // Formulir Forgot Password
+     public function forgotPassForm()
+     {
+         return view('Auth.forgot-password');
+     }
+
+     public function resetPassLink(Request $request)
+     {
+         // Validasi email
+         $request->validate([
+             'email' => 'required|email|exists:users,email',
+         ]);
+     
+         // Mengirimkan reset link ke email
+         $status = Password::sendResetLink($request->only('email'));
+     
+         // Cek apakah reset link berhasil dikirim
+         if ($status === Password::RESET_LINK_SENT) {
+             // Menambahkan notifikasi berhasil
+             return redirect()->route('password.request')->with('email_send', 'Kami sudah mengirim email, tolong periksa email anda!');
+         }
+     
+         // Jika gagal mengirim reset link, kirimkan error
+         return redirect()->route('password.request')->with('error','We cannot find a user with that e-mail address.');
+     }     
+
+ 
+     // Formulir Reset Password Baru
+     public function newPassForm(Request $request)
+     {
+         // Mengambil token dari URL
+         return view('auth.reset-password', ['token' => $request->route('token')]);
+     }
+ 
+     // Proses Reset Password Baru
+    public function newPass(Request $request)
+    {
+        // Validasi input dari pengguna
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|min:3|confirmed',
+        ]);
+
+        // Proses reset password
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                // Mengupdate password pengguna
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->save();
+            }
+        );
+
+        // Cek apakah reset password berhasil
+        if ($status === Password::PASSWORD_RESET) {
+            // Redirect dengan pesan keberhasilan
+            return redirect()->route('login')->with('status', 'Password Anda berhasil diperbarui! Silakan login dengan password baru.');
+        }
+
+        // Jika gagal, tampilkan pesan error
+        return back()->withErrors(['email' => 'Email tidak terdaftar atau token tidak valid. Silakan coba lagi.']);
     }
 }
