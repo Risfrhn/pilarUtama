@@ -102,34 +102,41 @@
 
     <div class="container mt-5">
         <div class="row text-center ">
+            <!-- Finished Projects -->
             <div class="col-6 col-lg-3 g-2">
-                <a href="" style="text-decoration:none;color:black;">
+                <a href="{{ route('projects.view', ['status' => 'finished']) }}" style="text-decoration:none;color:black;">
                     <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                        <h3 class="mt-3" style="color:#65031D;">20+</h3>
+                        <h3 class="mt-3" style="color:#65031D;">{{ $finishedProjects }}+</h3>
                         <p>Finished Projects</p>
                     </div>
                 </a>
             </div>
+
+            <!-- Ongoing Projects -->
             <div class="col-6 col-lg-3 g-2">
-                <a href="" style="text-decoration:none;color:black;">
+                <a href="{{ route('projects.view', ['status' => 'ongoing']) }}" style="text-decoration:none;color:black;">
                     <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                        <h3 class="mt-3" style="color:#65031D;">20+</h3>
+                        <h3 class="mt-3" style="color:#65031D;">{{ $ongoingProjects }}+</h3>
                         <p>On Going Projects</p>
                     </div>
                 </a>
             </div>
+
+            <!-- Projects Being Designed -->
             <div class="col-6 col-lg-3 g-2">
-                <a href="" style="text-decoration:none;color:black;">
+                <a href="{{ route('projects.view', ['status' => 'beingDesign']) }}" style="text-decoration:none;color:black;">
                     <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                        <h3 class="mt-3" style="color:#65031D;">20+</h3>
-                        <p>Projects Being Design</p>
+                        <h3 class="mt-3" style="color:#65031D;">{{ $designProjects }}+</h3>
+                        <p>Projects Being Designed</p>
                     </div>
                 </a>
             </div>
+
+            <!-- Negotiation Projects -->
             <div class="col-6 col-lg-3 g-2">
-                <a href="" style="text-decoration:none;color:black;">
+                <a href="{{ route('projects.view', ['status' => 'negotiation']) }}" style="text-decoration:none;color:black;">
                     <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                        <h3 class="mt-3" style="color:#65031D;">20+</h3>
+                        <h3 class="mt-3" style="color:#65031D;">{{ $negotiationProjects }}+</h3>
                         <p>Negotiation Stages</p>
                     </div>
                 </a>
@@ -152,19 +159,22 @@
 </div>
 @endforeach
 
-<button type="button" class="btn btn-lg position-fixed bottom-0  end-0 m-5" style="background-color:#65031D;color:#EEEBE5" data-bs-toggle="modal" data-bs-target="#editModal">
+<button type="button" class="btn btn-lg end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:50px" data-bs-toggle="modal" data-bs-target="#editModal">
     <i class="bi bi-pencil"></i>
+</button>
+<button type="button" class="btn btn-lg end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:100px" data-bs-toggle="modal" data-bs-target="#tambahModal">
+    <i class="bi bi-building-fill-add"></i>
 </button>
 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
     @csrf
-    <button type="submit" class="btn btn-lg end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:50px">
+    <button type="submit" class="btn btn-lg position-fixed bottom-0  end-0 m-5" style="background-color:#65031D;color:#EEEBE5">
         <i class="bi bi-door-open-fill"></i>
     </button>
 </form>
 
 
 
-<!-- modal -->
+<!-- modal edit landing -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -190,127 +200,192 @@
                     </ul>
 
                     <!-- Tab content -->
-                        <div class="tab-content mt-3" id="modalTabContent">
-                            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                    <div class="tab-content mt-3" id="modalTabContent">
+                        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                            <div class="mb-3">
+                                <label for="imageInput" class="form-label">Masukkan gambar flyer</label>
+                                <input type="file" class="form-control" id="imageInput" name="imageflyer" accept="image/*">
+                            </div>
+                            <div class="mb-3">
+                                <img id="previewImage" src="{{ asset($item->flyer_image) }}" alt="Image Preview" class="img-fluid">
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                            <!-- Input untuk Desk 1 -->
+                            <div class="mb-3">
+                                <label for="desk1" class="form-label">Desk 1</label>
+                                <textarea id="desk1" name="desk1" class="form-control" rows="3">{{ $item->about_us_desk1 }}</textarea>
+                            </div>
+
+                            <!-- Input untuk Gambar About Us -->
+                            <div class="mb-3">
+                                <label for="gambarAboutUs" class="form-label">Upload Gambar About Us</label>
+                                <input type="file" id="gambarAboutUs" name="gambarAboutUs" class="form-control" accept="image/*">
+                            </div>
+                            <div class="mb-3">
+                                <img id="previewImage" src="{{ asset($item->about_us_image) }}" alt="Image Preview" class="img-fluid">
+                            </div>
+
+                            <!-- Input untuk Desk 2 -->
+                            <div class="mb-3">
+                                <label for="desk2" class="form-label">Desk 2</label>
+                                <textarea id="desk2" name="desk2" class="form-control" rows="3">{{ $item->about_us_desk2}}</textarea>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                            <!-- Arsitektur -->
+                            <div class="mb-4">
+                                <h5>Arsitektur</h5>
                                 <div class="mb-3">
-                                    <label for="imageInput" class="form-label">Masukkan gambar flyer</label>
-                                    <input type="file" class="form-control" id="imageInput" name="imageflyer" accept="image/*">
+                                    <label for="architecturDesk" class="form-label">Deskripsi Arsitektur</label>
+                                    <textarea id="architecturDesk" name="architectur_desk" class="form-control" rows="3">{{ $item->architectur_desk}}</textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <img id="previewImage" src="{{ asset($item->flyer_image) }}" alt="Image Preview" class="img-fluid">
+                                    <label for="architecturImage" class="form-label">Upload Gambar Arsitektur</label>
+                                    <input type="file" id="architecturImage" name="architecturImage" class="form-control" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <img id="architecturPreviewImage" src="{{ asset($item->architectur_image)}}" alt="Image Preview" class="img-fluid">
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                                <!-- Input untuk Desk 1 -->
-                                <div class="mb-3">
-                                    <label for="desk1" class="form-label">Desk 1</label>
-                                    <textarea id="desk1" name="desk1" class="form-control" rows="3">{{ $item->about_us_desk1 }}</textarea>
-                                </div>
 
-                                <!-- Input untuk Gambar About Us -->
+                            <!-- Interior -->
+                            <div class="mb-4">
+                                <h5>Interior</h5>
                                 <div class="mb-3">
-                                    <label for="gambarAboutUs" class="form-label">Upload Gambar About Us</label>
-                                    <input type="file" id="gambarAboutUs" name="gambarAboutUs" class="form-control" accept="image/*">
+                                    <label for="interiorDesk" class="form-label">Deskripsi Interior</label>
+                                    <textarea id="interiorDesk" name="interior_desk" class="form-control" rows="3">{{ $item->interior_desk}}</textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <img id="previewImage" src="{{ asset($item->about_us_image) }}" alt="Image Preview" class="img-fluid">
+                                    <label for="interiorImage" class="form-label">Upload Gambar Interior</label>
+                                    <input type="file" id="interiorImage" name="interiorImage" class="form-control" accept="image/*">
                                 </div>
-
-                                <!-- Input untuk Desk 2 -->
                                 <div class="mb-3">
-                                    <label for="desk2" class="form-label">Desk 2</label>
-                                    <textarea id="desk2" name="desk2" class="form-control" rows="3">{{ $item->about_us_desk2}}</textarea>
+                                    <img id="interiorPreviewImage" src="{{ asset($item->interior_image) }}" alt="Image Preview" class="img-fluid">
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-                                <!-- Arsitektur -->
-                                <div class="mb-4">
-                                    <h5>Arsitektur</h5>
-                                    <div class="mb-3">
-                                        <label for="architecturDesk" class="form-label">Deskripsi Arsitektur</label>
-                                        <textarea id="architecturDesk" name="architectur_desk" class="form-control" rows="3">{{ $item->architectur_desk}}</textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="architecturImage" class="form-label">Upload Gambar Arsitektur</label>
-                                        <input type="file" id="architecturImage" name="architecturImage" class="form-control" accept="image/*">
-                                    </div>
-                                    <div class="mb-3">
-                                        <img id="architecturPreviewImage" src="{{ asset($item->architectur_image)}}" alt="Image Preview" class="img-fluid">
-                                    </div>
-                                </div>
 
-                                <!-- Interior -->
-                                <div class="mb-4">
-                                    <h5>Interior</h5>
-                                    <div class="mb-3">
-                                        <label for="interiorDesk" class="form-label">Deskripsi Interior</label>
-                                        <textarea id="interiorDesk" name="interior_desk" class="form-control" rows="3">{{ $item->interior_desk}}</textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="interiorImage" class="form-label">Upload Gambar Interior</label>
-                                        <input type="file" id="interiorImage" name="interiorImage" class="form-control" accept="image/*">
-                                    </div>
-                                    <div class="mb-3">
-                                        <img id="interiorPreviewImage" src="{{ asset($item->interior_image) }}" alt="Image Preview" class="img-fluid">
-                                    </div>
+                            <!-- Landscape -->
+                            <div class="mb-4">
+                                <h5>Landscape</h5>
+                                <div class="mb-3">
+                                    <label for="landscapeDesk" class="form-label">Deskripsi Landscape</label>
+                                    <textarea id="landscapeDesk" name="landscape_desk" class="form-control" rows="3">{{ $item->landscape_desk}}</textarea>
                                 </div>
-
-                                <!-- Landscape -->
-                                <div class="mb-4">
-                                    <h5>Landscape</h5>
-                                    <div class="mb-3">
-                                        <label for="landscapeDesk" class="form-label">Deskripsi Landscape</label>
-                                        <textarea id="landscapeDesk" name="landscape_desk" class="form-control" rows="3">{{ $item->landscape_desk}}</textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="landscapeImage" class="form-label">Upload Gambar Landscape</label>
-                                        <input type="file" id="landscapeImage" name="landscapeImage" class="form-control" accept="image/*">
-                                    </div>
-                                    <div class="mb-3">
-                                        <img id="landscapePreviewImage" src="{{ asset($item->landscape_image) }}" alt="Image Preview" class="img-fluid">
-                                    </div>
+                                <div class="mb-3">
+                                    <label for="landscapeImage" class="form-label">Upload Gambar Landscape</label>
+                                    <input type="file" id="landscapeImage" name="landscapeImage" class="form-control" accept="image/*">
                                 </div>
-
-                                <!-- Renovasi -->
-                                <div class="mb-4">
-                                    <h5>Renovasi</h5>
-                                    <div class="mb-3">
-                                        <label for="renovationDesk" class="form-label">Deskripsi Renovasi</label>
-                                        <textarea id="renovationDesk" name="renovation_desk" class="form-control" rows="3">{{ $item->renovation_desk}}</textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="renovationImage" class="form-label">Upload Gambar Renovasi</label>
-                                        <input type="file" id="renovationImage" name="renovationImage" class="form-control" accept="image/*">
-                                    </div>
-                                    <div class="mb-3">
-                                        <img id="renovationPreviewImage" src="{{ asset($item->renovation_image) }}" alt="Image Preview" class="img-fluid">
-                                    </div>
+                                <div class="mb-3">
+                                    <img id="landscapePreviewImage" src="{{ asset($item->landscape_image) }}" alt="Image Preview" class="img-fluid">
                                 </div>
+                            </div>
 
-                                <!-- Commercial Build -->
-                                <div class="mb-4">
-                                    <h5>Commercial Build</h5>
-                                    <div class="mb-3">
-                                        <label for="comercialBuildDesk" class="form-label">Deskripsi Commercial Build</label>
-                                        <textarea id="comercialBuildDesk" name="comercial_build_desk" class="form-control" rows="3">{{ $item->comercial_build_desk}}</textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="comercialBuildImage" class="form-label">Upload Gambar Commercial Build</label>
-                                        <input type="file" id="comercialBuildImage" name="comercialBuildImage" class="form-control" accept="image/*">
-                                    </div>
-                                    <div class="mb-3">
-                                        <img id="comercialBuildPreviewImage" src="{{ asset($item->comercial_build_image) }}" alt="Image Preview" class="img-fluid">
-                                    </div>
+                            <!-- Renovasi -->
+                            <div class="mb-4">
+                                <h5>Renovasi</h5>
+                                <div class="mb-3">
+                                    <label for="renovationDesk" class="form-label">Deskripsi Renovasi</label>
+                                    <textarea id="renovationDesk" name="renovation_desk" class="form-control" rows="3">{{ $item->renovation_desk}}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="renovationImage" class="form-label">Upload Gambar Renovasi</label>
+                                    <input type="file" id="renovationImage" name="renovationImage" class="form-control" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <img id="renovationPreviewImage" src="{{ asset($item->renovation_image) }}" alt="Image Preview" class="img-fluid">
+                                </div>
+                            </div>
+
+                            <!-- Commercial Build -->
+                            <div class="mb-4">
+                                <h5>Commercial Build</h5>
+                                <div class="mb-3">
+                                    <label for="comercialBuildDesk" class="form-label">Deskripsi Commercial Build</label>
+                                    <textarea id="comercialBuildDesk" name="comercial_build_desk" class="form-control" rows="3">{{ $item->comercial_build_desk}}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="comercialBuildImage" class="form-label">Upload Gambar Commercial Build</label>
+                                    <input type="file" id="comercialBuildImage" name="comercialBuildImage" class="form-control" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <img id="comercialBuildPreviewImage" src="{{ asset($item->comercial_build_image) }}" alt="Image Preview" class="img-fluid">
                                 </div>
                             </div>
                         </div>
-                    
+                    </div>   
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- modal tambah projek -->
+<div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tambahModalLabel">Tambah Projek</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nama</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description1" class="form-label">Deskripsi 1</label>
+                        <textarea class="form-control" id="description1" name="description1"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description2" class="form-label">Deskripsi 2</label>
+                        <textarea class="form-control" id="description2" name="description2"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="jenis_projek" class="form-label">Jenis Proyek</label>
+                        <select class="form-select" id="jenis_projek" name="jenis_projek">
+                            <option value="Architecture">Architecture</option>
+                            <option value="Commercial_building">Commercial Building</option>
+                            <option value="Interior">Interior</option>
+                            <option value="Landscape">Landscape</option>
+                            <option value="Renovation">Renovation</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="target_pengerjaan_start" class="form-label">Tanggal Mulai</label>
+                        <input type="date" class="form-control" id="target_pengerjaan_start" name="target_pengerjaan_start">
+                    </div>
+                    <div class="mb-3">
+                        <label for="target_pengerjaan_end" class="form-label">Tanggal Selesai</label>
+                        <input type="date" class="form-control" id="target_pengerjaan_end" name="target_pengerjaan_end">
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="ongoing">On going</option>
+                            <option value="beingDesign">Being Design</option>
+                            <option value="finished">Finished</option>
+                            <option value="negotiation">Negotiation</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gambarflyer" class="form-label">Gambar Flyer</label>
+                        <input type="file" class="form-control" id="gambarflyer" name="gambarflyer">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

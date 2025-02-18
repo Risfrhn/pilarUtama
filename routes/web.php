@@ -31,8 +31,14 @@ Route::post('/reset-password', [AuthController::class, 'newPass'])->name('passwo
 # Admin
 ## landingPage
 Route::get('/dashboardAdmin', [AdminController::class, 'showLandingPageAdmin'])->middleware('auth')->name('dashboardAdmin.view');
-
 Route::put('/update', [AdminController::class, 'update'])->middleware('auth')->name('update');
+## tambah projek
+Route::post('/projects/store', [AdminController::class, 'storeProject'])->name('projects.store');
+## list projek
+Route::get('/projects/status/{status}', [AdminController::class, 'showProject'])->name('projects.view');
+## detail projek
+Route::get('/projects/status/{status}/{id}', [AdminController::class, 'showProjectDetail'])->name('projectsDetail.view');
+Route::put('/projects/status/{status}/{id}/update',[AdminController::class, 'updateProject'])->name('projects.update');
 
 
 

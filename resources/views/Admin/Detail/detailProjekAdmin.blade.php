@@ -1,7 +1,7 @@
 @include('header')
 
 <div class="container mb-5">
-    <h1 style="color:#65031D;">Pesona bali</h1>
+    <h1 style="color:#65031D;">{{ $detailProject->name }}</h1>
     <div class="w-100 border border-1 border-dark mb-3"></div>
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -16,15 +16,11 @@
             <div class="flex-grow-1 d-flex align-items-stretch">
                 <div id="carouselExample1" class="carousel slide w-100" data-bs-ride="carousel">
                     <div class="carousel-inner h-100 rounded-2" style="color:#65031D; border: 2px solid #65031D;">
-                        <div class="carousel-item active h-100">
-                            <img src="{{ asset('image/layanan.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Slide 1">
-                        </div>
-                        <div class="carousel-item h-100">
-                            <img src="{{ asset('image/layanan.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Slide 2">
-                        </div>
-                        <div class="carousel-item h-100">
-                            <img src="{{ asset('image/layanan.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Slide 1">
-                        </div>
+                        @foreach ($projectBefores as $index => $projectBefore)
+                            <div class="carousel-item active h-100 {{ $index == 0 ? 'active' : '' }}">
+                                <img src="{{ asset($projectBefore->image) }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
+                            </div>
+                        @endforeach
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample1" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -41,8 +37,7 @@
             <div class="mt-4">
                 <h1 style="font-size:20px;color:#65031D;">Client Problem</h1>
                 <p style="font-size:10px;text-align:justify">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam consequatur velit odit fugiat? Quis, dolore beatae! Rerum iste repellendus amet.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus aspernatur qui culpa. Necessitatibus atque impedit quasi ratione adipisci. Temporibus, quaerat!
+                {{ $detailProject->description1 }}
                 </p>
             </div>
             <div class="d-flex justify-content-center mb-2">
@@ -54,29 +49,26 @@
             <div>
                 <h1 style="font-size:20px;color:#65031D;">Problem Client</h1>
                 <p style="font-size:10px;text-align:justify">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias natus dolore recusandae doloribus? Ea consequatur itaque dolorem voluptatum modi ut qui dolor aliquid eligendi, culpa repellendus veritatis, dolore iste porro unde laudantium. Harum dolorem officia, labore provident voluptatibus sed quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet incidunt asperiores est recusandae odit placeat, quas quibusdam dolor facilis accusantium.
+                {{ $detailProject->description2 }}
                 </p>
             </div>
             <div>
-                <h1 style="font-size:15px;color:#65031D;">[ Target Pengerjaan ] Jan - Feb 2025</h1>
+                <h1 style="font-size:15px;color:#65031D;">[ Target Pengerjaan ] {{ $detailProject->target_pengerjaan_start }} - {{ $detailProject->target_pengerjaan_end }}</h1>
             </div>
         </div>
 
         <!-- Carousel Kanan -->
+        @if($detailProject->status === 'finished')
         <div class="col-12 col-md-4 d-flex flex-column">
             <p style="font-size:15px; margin-bottom:2px">Result</p>
             <div class="flex-grow-1 d-flex align-items-stretch">
                 <div id="carouselExample2" class="carousel slide w-100" data-bs-ride="carousel">
                     <div class="carousel-inner h-100 rounded-2" style="color:#65031D; border: 2px solid #65031D;">
-                        <div class="carousel-item active h-100">
-                            <img src="{{ asset('image/layanan.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Slide 1">
-                        </div>
-                        <div class="carousel-item h-100">
-                            <img src="{{ asset('image/layanan.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Slide 2">
-                        </div>
-                        <div class="carousel-item h-100">
-                            <img src="{{ asset('image/layanan.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Slide 1">
-                        </div>
+                        @foreach ($projectAfters as $index => $projectAfters)
+                            <div class="carousel-item active h-100 {{ $index == 0 ? 'active' : '' }}">
+                                <img src="{{ asset($projectAfters->image) }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
+                            </div>
+                        @endforeach
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -87,7 +79,111 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 </div>
+
+<!-- edit detail -->
+<button type="button" class="btn btn-lg end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:0px" data-bs-toggle="modal" data-bs-target="#tambahProjekModal">
+    <i class="bi bi-pencil"></i>
+</button>
+
+<div class="modal fade" id="tambahProjekModal" tabindex="-1" aria-labelledby="tambahProjekLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tambahProjekLabel">Edit Projek</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="projekTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="informasi-tab" data-bs-toggle="tab" data-bs-target="#informasi" type="button" role="tab" aria-controls="informasi" aria-selected="true">Informasi</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="media-tab" data-bs-toggle="tab" data-bs-target="#media" type="button" role="tab" aria-controls="media" aria-selected="false">Media</button>
+                    </li>
+                </ul>
+                <form action="{{ route('projects.update', ['status' => $detailProject->status, 'id' => $detailProject->id]) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="tab-content mt-3" id="projekTabContent">
+                        <!-- Tab Informasi -->
+                        <div class="tab-pane fade show active" id="informasi" role="tabpanel" aria-labelledby="informasi-tab">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nama</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ $detailProject->name }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="description1" class="form-label">Deskripsi 1</label>
+                                <textarea class="form-control" id="description1" name="description1">{{ $detailProject->description1 }}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description2" class="form-label">Deskripsi 2</label>
+                                <textarea class="form-control" id="description2" name="description2" >{{ $detailProject->description2 }}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="jenis_projek" class="form-label">Jenis Proyek</label>
+                                <select class="form-select" id="jenis_projek" name="jenis_projek" value="{{ $detailProject->jenis_projek }}">
+                                    <option value="Architecture">Architecture</option>
+                                    <option value="Commercial_building">Commercial Building</option>
+                                    <option value="Interior">Interior</option>
+                                    <option value="Landscape">Landscape</option>
+                                    <option value="Renovation">Renovation</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="target_pengerjaan_start" class="form-label">Tanggal Mulai</label>
+                                <input type="date" class="form-control" id="target_pengerjaan_start" name="target_pengerjaan_start" value="{{ $detailProject->target_pengerjaan_start }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="target_pengerjaan_end" class="form-label">Tanggal Selesai</label>
+                                <input type="date" class="form-control" id="target_pengerjaan_end" name="target_pengerjaan_end"value="{{ $detailProject->target_pengerjaan_end }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select" id="status" name="status" value="{{ $detailProject->status }}">
+                                    <option value="ongoing">On going</option>
+                                    <option value="beingDesign">Being Design</option>
+                                    <option value="finished">Finished</option>
+                                    <option value="negotiation">Negotiation</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Tab Media -->
+                        <div class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
+                            <div class="mb-3">
+                                <label for="gambarflyer" class="form-label">Gambar Flyer</label>
+                                <input type="file" class="form-control" id="gambarflyer" name="gambarflyer">
+                            </div>
+                            <div class="mb-3">
+                                <img id="gambarflyer" src="{{ asset($detailProject->gambarflyer)}}" alt="Image Preview" class="img-fluid">
+                            </div>
+                            <div class="mb-3">
+                                <label for="foto_before" class="form-label">Foto Before</label>
+                                <input type="file" class="form-control" id="foto_before" name="foto_before[]" multiple>
+                            </div>
+                            <div class="mb-3">
+                                <label for="foto_after" class="form-label">Foto After</label>
+                                <input type="file" class="form-control" id="foto_after" name="foto_after[]" multiple>
+                            </div>
+                            <div class="mb-3">
+                                <label for="video" class="form-label">Upload Video</label>
+                                <input type="file" class="form-control" id="video" name="video">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @include('footer')

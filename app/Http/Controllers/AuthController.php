@@ -23,7 +23,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required|min:3',
         ]);
 
         User::create([
@@ -46,7 +46,7 @@ class AuthController extends Controller
         if ($request->isMethod('post')) {
             $validated = $request->validate([
                 'email' => 'required|email',
-                'password' => 'required|min:3',
+                'password' => 'required|min:3|',
             ]);
             // Cek apakah email ada di database
             $userExists = User::where('email', $request->email)->exists();
