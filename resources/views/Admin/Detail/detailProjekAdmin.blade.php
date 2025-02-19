@@ -106,24 +106,25 @@
     </div>
 </div>
 
-<!-- edit detail -->
-<button type="button" class="btn btn-lg end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:0px" data-bs-toggle="modal" data-bs-target="#tambahProjekModal">
+<!-- BUTTON MENGAMBANG -->
+<button type="button" class="btn btn-lg end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:0px" data-bs-toggle="modal" data-bs-target="#updateProjekModal">
     <i class="bi bi-pencil"></i>
 </button>
-
-<form action="{{ route('projects.delete', ['project_id' => $detailProject->id]) }}" method="POST" class="d-inline">
+<form id="delete-form" action="{{ route('projects.delete', ['project_id' => $detailProject->id]) }}" method="POST" class="d-inline">
     @csrf
     @method('DELETE')
-    <button type="submit" class="btn btn-lg  end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:50px">
+    <button type="button" class="btn btn-lg end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:50px" onclick="showDeleteConfirmation()">
         <i class="bi bi-trash-fill"></i>
     </button>
 </form>
 
-<div class="modal fade" id="tambahProjekModal" tabindex="-1" aria-labelledby="tambahProjekLabel" aria-hidden="true">
+
+<!-- MODAL UPDATE -->
+<div class="modal fade" id="updateProjekModal" tabindex="-1" aria-labelledby="updateProjekLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="tambahProjekLabel">Edit Projek</h5>
+                <h5 class="modal-title" id="updateProjekLabel">Edit Projek</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -207,7 +208,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary" onclick="showEditDetailConfirmation()">Save changes</button>
                     </div>
                 </form>
             </div>
@@ -216,6 +217,80 @@
 </div>
 
 
+
+<!-- MODAL NOTIF -->
+<!-- Modal Konfirmasi Edit Detail -->
+<div class="modal fade" id="confirmEditDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content" style="background-color: #EEEBE5;">
+            <div class="modal-body text-center py-4">
+                <h5 class="mb-3">Konfirmasi Edit</h5>
+                <p>Apakah anda yakin ingin mengedit data ini?</p>
+                <div class="d-flex justify-content-center gap-2 mt-4">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn" style="background-color: #65031D; color: #EEEBE5;" onclick="submitForm()">Ya, Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Delete -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content" style="background-color: #EEEBE5;">
+            <div class="modal-body text-center py-4">
+                <h5 class="mb-3">Konfirmasi Hapus</h5>
+                <p>Apakah anda yakin ingin menghapus data ini?</p>
+                <div class="d-flex justify-content-center gap-2 mt-4">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn" style="background-color: #65031D; color: #EEEBE5;" onclick="proceedToDelete()">Ya, Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL NOTIF -->
+<script>
+
+    function showDeleteConfirmation() {
+        const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+        modal.show();
+    }
+    function proceedToDelete() {
+        document.getElementById('delete-form').submit();
+    }
+</script>
+
+
+<script>
+    function showEditDetailConfirmation() {
+        // Tutup modal edit terlebih dahulu
+        const editModal = bootstrap.Modal.getInstance(document.getElementById('updateProjekModal'));
+        editModal.hide();
+        
+        // Tampilkan modal konfirmasi
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirmEditDetailModal'));
+        confirmModal.show();
+    }
+
+    function submitForm() {
+        // Tutup modal konfirmasi
+        const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmEditDetailModal'));
+        confirmModal.hide();
+        
+        // Ambil form dan submit
+        const form = document.querySelector('#updateProjekModal form');
+        form.submit();
+    }    
+</script>
+
+
+
+
+<!-- ALERT -->
 @if(session('error'))
     <script>
         document.addEventListener("DOMContentLoaded", function() {

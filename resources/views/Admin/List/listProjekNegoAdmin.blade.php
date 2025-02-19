@@ -77,10 +77,10 @@
                                             data-bs-target="#updateProjekModal">
                                             Edit
                                         </button>
-                                        <form action="{{ route('projectNego.destroy', ['status' => $status, 'id' => $project->id]) }}" method="POST" class="d-inline">
+                                        <form id="delete-form" action="{{ route('projectNego.destroy', ['status' => $status, 'id' => $project->id]) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this project?')">
+                                            <button type="button" class="btn btn-danger" onclick="showDeleteConfirmation()">
                                                 Delete
                                             </button>
                                         </form>
@@ -151,8 +151,7 @@
         </div>
     </div>
 </div>
-
-
+<!-- Modal update projek -->
 <div class="modal fade" id="updateProjekModal" tabindex="-1" aria-labelledby="updateProjekLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -204,13 +203,50 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary" onclick="showEditDetailConfirmation()">Save changes</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
+
+<!-- MODAL NOTIF -->
+<!-- Modal Konfirmasi Edit Detail -->
+<div class="modal fade" id="confirmEditDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content" style="background-color: #EEEBE5;">
+            <div class="modal-body text-center py-4">
+                <h5 class="mb-3">Konfirmasi Edit</h5>
+                <p>Apakah anda yakin ingin mengedit data ini?</p>
+                <div class="d-flex justify-content-center gap-2 mt-4">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn" style="background-color: #65031D; color: #EEEBE5;" onclick="submitForm()">Ya, Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Delete -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content" style="background-color: #EEEBE5;">
+            <div class="modal-body text-center py-4">
+                <h5 class="mb-3">Konfirmasi Hapus</h5>
+                <p>Apakah anda yakin ingin menghapus data ini?</p>
+                <div class="d-flex justify-content-center gap-2 mt-4">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn" style="background-color: #65031D; color: #EEEBE5;" onclick="proceedToDelete()">Ya, Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -231,6 +267,42 @@
         $("#updateProjekModal #jenis_projek").val(jenis_projek);
         $("#updateProjekModal #status").val(status);
     });
+</script>
+
+
+<!-- MODAL NOTIF -->
+<script>
+
+    function showDeleteConfirmation() {
+        const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+        modal.show();
+    }
+    function proceedToDelete() {
+        document.getElementById('delete-form').submit();
+    }
+</script>
+
+
+<script>
+    function showEditDetailConfirmation() {
+        // Tutup modal edit terlebih dahulu
+        const editModal = bootstrap.Modal.getInstance(document.getElementById('updateProjekModal'));
+        editModal.hide();
+        
+        // Tampilkan modal konfirmasi
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirmEditDetailModal'));
+        confirmModal.show();
+    }
+
+    function submitForm() {
+        // Tutup modal konfirmasi
+        const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmEditDetailModal'));
+        confirmModal.hide();
+        
+        // Ambil form dan submit
+        const form = document.querySelector('#updateProjekModal form');
+        form.submit();
+    }    
 </script>
 
 @if(session('error'))

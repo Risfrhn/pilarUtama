@@ -5,8 +5,12 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-
+#USER
 Route::get('/', [UserController::class, 'showLandingPageUser'])->name('dashboardUser.view');
+Route::get('/Dashboard/projects/negotiation/{status}', [UserController::class, 'showProjectNegoUser'])->name('projectsNegoUser.view');
+Route::get('/Dashboard/projects/status/{status}', [UserController::class, 'showProjectUser'])->name('projectsUser.view');
+Route::get('/Dashboard/projects/status/{status}/{id}', [UserController::class, 'showProjectDetailUser'])->name('projectsDetailUser.view');
+
 
 
 # auth 

@@ -1,5 +1,4 @@
 @include('header')
-@include('Component.alert')
 
 @foreach($modalData as $item)
 <!-- halaman utama -->
@@ -46,11 +45,11 @@
     <div class="row mt-5" style="line-height:1.2">
         <h1 class="mb-0 fst-italic">Our</h1>
         <p class="aboutUs" style="font-size:50px">Services</p>
-        <div class="col-12 col-lg-3">
+        <div class="col-12 col-lg-3 d-flex justify-content-center">
             <img id="layananImage" src="{{ $item->architectur_image }}" class="img-fluid mb-5" alt="Service Image">
         </div>
-        <div class="col-lg-3 mb-lg-0 mb-5">
-            <ul class="nav flex-column" id="serviceTabs">
+        <div class="col-lg-2 mb-lg-0 mb-2">
+            <ul class="nav flex-lg-column flex-row justify-content-center" id="serviceTabs">
                 <li class="nav-item">
                     <a class="nav-link layanan text-dark fw-medium active" href="#" data-image="{{ $item->architectur_image }}" data-target="desc-architectur">Architecture</a>
                 </li>
@@ -68,7 +67,7 @@
                 </li>
             </ul>
         </div>
-        <div class="col-lg-6 col-12 text-lg-start text-center">
+        <div class="col-lg-7 col-12 text-lg-start text-center">
             <div class="tab-content w-100" id="contentContainer">
                 <div id="desc-architectur" class="tab-pane fade show active">
                     <p class="fw-semibold" style="color:#65031D;">Architecture</p>
@@ -102,29 +101,45 @@
 
     <div class="container mt-5">
         <div class="row text-center ">
+            <!-- Finished Projects -->
             <div class="col-6 col-lg-3 g-2">
-                <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                    <h3 class="mt-3" style="color:#65031D;">20+</h3>
-                    <p>Finished Projects</p>
-                </div>
+                <a href="{{ route('projectsUser.view', ['status' => 'finished']) }}" style="text-decoration:none;color:black;">
+                    <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
+                        <h3 class="mt-3" style="color:#65031D;">{{ $finishedProjects }}+</h3>
+                        <p>Finished Projects</p>
+                    </div>
+                </a>
             </div>
+
+            <!-- Ongoing Projects -->
             <div class="col-6 col-lg-3 g-2">
-                <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                    <h3 class="mt-3" style="color:#65031D;">20+</h3>
-                    <p>On Going Projects</p>
-                </div>
+                <a href="{{ route('projectsUser.view', ['status' => 'ongoing']) }}" style="text-decoration:none;color:black;">
+                    <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
+                        <h3 class="mt-3" style="color:#65031D;">{{ $ongoingProjects }}+</h3>
+                        <p>On Going Projects</p>
+                    </div>
+                </a>
             </div>
+
+            <!-- Projects Being Designed -->
             <div class="col-6 col-lg-3 g-2">
-                <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                    <h3 class="mt-3" style="color:#65031D;">20+</h3>
-                    <p>Projects Being Design</p>
-                </div>
+                <a href="{{ route('projectsUser.view', ['status' => 'beingDesign']) }}" style="text-decoration:none;color:black;">
+                    <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
+                        <h3 class="mt-3" style="color:#65031D;">{{ $designProjects }}+</h3>
+                        <p>Projects Being Designed</p>
+                    </div>
+                </a>
             </div>
+
+            <!-- Negotiation Projects -->
             <div class="col-6 col-lg-3 g-2">
-                <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                    <h3 class="mt-3" style="color:#65031D;">20+</h3>
-                    <p>Negotiation Stages</p>
-                </div>
+                <a href="{{ route('projectsNegoUser.view', ['status' => 'negotiation']) }}"  
+                style="text-decoration:none;color:black;">
+                    <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
+                        <h3 class="mt-3" style="color:#65031D;">{{ $negotiationProjects }}+</h3>
+                        <p>Negotiation Stages</p>
+                    </div>
+                </a>
             </div>
         </div>    
     </div>
@@ -143,10 +158,3 @@
     <h1 class="noHp">0851-8333-4971</h1>
 </div>
 @endforeach
-
-@include('footer')
-
-
-
-
-

@@ -133,18 +133,15 @@
             </div>
 
             <!-- Negotiation Projects -->
-            
-                <div class="col-6 col-lg-3 g-2">
-                    <a href="{{ route('projectsNego.view', ['status' => 'negotiation']) }}"  
-                    style="text-decoration:none;color:black;">
-                        <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                            <h3 class="mt-3" style="color:#65031D;">{{ $negotiationProjects }}+</h3>
-                            <p>Negotiation Stages</p>
-                        </div>
-                    </a>
-                </div>
-          
-
+            <div class="col-6 col-lg-3 g-2">
+                <a href="{{ route('projectsNego.view', ['status' => 'negotiation']) }}"  
+                style="text-decoration:none;color:black;">
+                    <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
+                        <h3 class="mt-3" style="color:#65031D;">{{ $negotiationProjects }}+</h3>
+                        <p>Negotiation Stages</p>
+                    </div>
+                </a>
+            </div>
         </div>    
     </div>
 </div>
@@ -171,13 +168,13 @@
 </button>
 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
     @csrf
-    <button type="submit" class="btn btn-lg position-fixed bottom-0  end-0 m-5" style="background-color:#65031D;color:#EEEBE5">
+    <button type="button" class="btn btn-lg position-fixed bottom-0  end-0 m-5" style="background-color:#65031D;color:#EEEBE5" onclick="showLogoutConfirmation()"s>
         <i class="bi bi-door-open-fill"></i>
     </button>
 </form>
 
 
-
+<!-- MODAL -->
 <!-- modal edit landing -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -321,15 +318,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary" onclick="showEditDetailConfirmation()">Save changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
-
 <!-- modal tambah projek -->
 <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -395,6 +389,41 @@
 </div>
 
 
+<!-- NOTIF -->
+<!-- Modal Konfirmasi Logout -->
+<div class="modal fade" id="confirmLogoutModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content" style="background-color: #EEEBE5;">
+            <div class="modal-body text-center py-4">
+                <h5 class="mb-3">Konfirmasi Logout</h5>
+                <p>Apakah anda yakin ingin keluar?</p>
+                <div class="d-flex justify-content-center gap-2 mt-4">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn" style="background-color: #65031D; color: #EEEBE5;" onclick="proceedToLogout()">Ya, Keluar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Save Changes -->
+<div class="modal fade" id="confirmEditDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content" style="background-color: #EEEBE5;">
+            <div class="modal-body text-center py-4">
+                <h5 class="mb-3">Konfirmasi Edit</h5>
+                <p>Apakah anda yakin ingin mengedit data ini?</p>
+                <div class="d-flex justify-content-center gap-2 mt-4">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn" style="background-color: #65031D; color: #EEEBE5;" onclick="submitForm()">Ya, Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- LAYANAN GANTI GAMBAR -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         let activeTab = "desc-architectur";
@@ -423,6 +452,7 @@
     });
 </script>
 
+<!-- LOGIC UNTUK MENGHILANGKAN INPUTAN UNTUK NEGOTIATION -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const statusSelect = document.getElementById("status");
@@ -448,6 +478,40 @@
         statusSelect.addEventListener("change", toggleFields);
         toggleFields(); // Panggil saat halaman dimuat untuk memastikan inputan disembunyikan jika perlu
     });
+</script>
+
+<!-- NOTIF -->
+<script>
+
+    function showLogoutConfirmation() {
+        const modal = new bootstrap.Modal(document.getElementById('confirmLogoutModal'));
+        modal.show();
+    }
+
+    function proceedToLogout() {
+        document.getElementById('logout-form').submit();
+    }
+</script>
+<script>
+    function showEditDetailConfirmation() {
+        // Tutup modal edit terlebih dahulu
+        const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+        editModal.hide();
+        
+        // Tampilkan modal konfirmasi
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirmEditDetailModal'));
+        confirmModal.show();
+    }
+
+    function submitForm() {
+        // Tutup modal konfirmasi
+        const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmEditDetailModal'));
+        confirmModal.hide();
+        
+        // Ambil form dan submit
+        const form = document.querySelector('#editModal form');
+        form.submit();
+    }    
 </script>
 
 

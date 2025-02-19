@@ -33,41 +33,80 @@
     
     <!-- Navbar -->
     @if (!Request::is('login') && !Request::is('register') && !Request::is('forgot-password') && !Request::is('reset-password/{token}') && !Request::is('reset-password/*'))
-        <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #EEEBE5; font-size:12px">
-            <div class="container d-flex justify-content-between align-items-center">
-                <a class="navbar-brand" style="font-size:10px;" href="#">
-                    <img src="{{ asset('image/Logo.png') }}" alt="Logo" height="60px" class="d-inline-block align-text-top"> 
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse w-90 justify-content-center fw-medium" id="navbarNav">
-                    <ul class="navbar-nav gap-4">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#halaman-utama">Home</a>
-                        </li>
-                        <li class="nav-item gap-4">
-                            <a class="nav-link" href="#tentang-kami">About Us</a>
-                        </li>
-                        <li class="nav-item gap-4">
-                            <a class="nav-link" href="#projek">Projects</a>
-                        </li>
-                        <li class="nav-item gap-4">
-                            <a class="nav-link" href="#layanan">Services</a>
-                        </li>
-                        <li class="nav-item gap-4">
-                            <a class="nav-link" href="#kontak">Contact</a>
-                        </li>
-                    </ul>
+        @if (Auth::check())
+            <!-- Navbar untuk pengguna yang sudah login -->
+            <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #EEEBE5; font-size:12px">
+                <div class="container d-flex justify-content-between align-items-center">
+                    <a class="navbar-brand" style="font-size:10px;" href="{{route('dashboardAdmin.view')}}">
+                        <img src="{{ asset('image/Logo.png') }}" alt="Logo" height="60px" class="d-inline-block align-text-top"> 
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse w-90 justify-content-center fw-medium" id="navbarNav">
+                        <ul class="navbar-nav gap-4">
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="{{route('dashboardAdmin.view')}}#halaman-utama">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('dashboardAdmin.view')}}#tentang-kami">About Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('dashboardAdmin.view')}}#projek">Projects</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('dashboardAdmin.view')}}#layanan">Services</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('dashboardAdmin.view')}}#kontak">Contact</a>
+                            </li>
+                        </ul>
+                        </div>
+                            <a href="#" class="text-decoration-none text-dark d-none d-lg-block">Indonesia, Kalimantan Timur</a>
+                        </div>
+                    </div>
                 </div>
-                <a href="#" class="text-decoration-none text-dark d-none d-lg-block">Indonesia, Kalimantan Timur</a>
-            </div>
-        </nav>
+            </nav>
+        @else
+            <!-- Navbar untuk pengguna yang belum login -->
+            <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #EEEBE5; font-size:12px">
+                <div class="container d-flex justify-content-between align-items-center">
+                    <a class="navbar-brand" style="font-size:10px;" href="{{route('dashboardUser.view')}}">
+                        <img src="{{ asset('image/Logo.png') }}" alt="Logo" height="60px" class="d-inline-block align-text-top"> 
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse w-90 justify-content-center fw-medium" id="navbarNav">
+                        <ul class="navbar-nav gap-4">
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="#halaman-utama">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#tentang-kami">About Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#projek">Projects</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#layanan">Services</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#kontak">Contact</a>
+                            </li>
+                        </ul>
+                        </div>
+                            <a href="#" class="text-decoration-none text-dark d-none d-lg-block">Indonesia, Kalimantan Timur</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        @endif
     @else
-        <!-- Hanya Logo untuk Halaman Login -->
+        <!-- Navbar sederhana untuk halaman login/register -->
         <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #EEEBE5; font-size:12px">
             <div class="container d-flex justify-content-between align-items-center">
-                <a class="navbar-brand" style="font-size:10px;" href="#">
+                <a class="navbar-brand" style="font-size:10px;" href="{{route('dashboardUser.view')}}">
                     <img src="{{ asset('image/Logo.png') }}" alt="Logo" height="60px" class="d-inline-block align-text-top"> 
                 </a>
             </div>

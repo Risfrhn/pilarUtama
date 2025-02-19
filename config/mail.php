@@ -109,7 +109,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'rskyfrhn801@gmail.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'satupilarutama@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'Password verification'),
     ],
 
