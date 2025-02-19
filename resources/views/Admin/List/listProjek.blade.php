@@ -19,15 +19,27 @@
         </div>
         <div class="col-12 col-md-6 col-lg-4 px-0">
             <div class="row g-1 mx-0 w-100 d-flex align-items-center"> 
-                <div class="col-8 col-md-8 col-lg-8 "> 
-                    <input class="form-control" type="text" placeholder="Search..." aria-label="default input example" style="background-color:#e0ddd7">
-                </div>
-                <div class="col-2 col-md-2 col-lg-2 "> 
-                    <button type="button" class="btn w-100" style="background-color:#65031D; color:#EEEBE5"><i class="bi bi-search"></i></button>
-                </div>
-                <div class="col-2 col-md-2 col-lg-2">
-                    <button type="button" class="btn w-100" style="background-color:#65031D; color:#EEEBE5"><i class="bi bi-filter"></i></button>
-                </div>
+                <form action="{{ route('projects.view', ['status' => $status]) }}" method="GET" class="row g-1 mx-0 w-100">
+                    <div class="col-8 col-md-8 col-lg-8"> 
+                        <input class="form-control" type="text" name="search" placeholder="Search project name..." 
+                            value="{{ request('search') }}" style="background-color:#e0ddd7">
+                    </div>
+                    <div class="col-2 col-md-2 col-lg-2"> 
+                        <button type="submit" class="btn w-100" style="background-color:#65031D; color:#EEEBE5">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    <div class="col-2 col-md-2 col-lg-2">
+                        <select class="form-select" name="jenis_projek" onchange="this.form.submit()" style="background-color:#e0ddd7">
+                            <option value="">All Types</option>
+                            <option value="Architecture" {{ request('jenis_projek') == 'Architecture' ? 'selected' : '' }}>Architecture</option>
+                            <option value="Commercial_building" {{ request('jenis_projek') == 'Commercial_building' ? 'selected' : '' }}>Commercial Building</option>
+                            <option value="Interior" {{ request('jenis_projek') == 'Interior' ? 'selected' : '' }}>Interior</option>
+                            <option value="Landscape" {{ request('jenis_projek') == 'Landscape' ? 'selected' : '' }}>Landscape</option>
+                            <option value="Renovation" {{ request('jenis_projek') == 'Renovation' ? 'selected' : '' }}>Renovation</option>
+                        </select>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -67,20 +79,27 @@
     </div>
     <div class="row mt-4 mb-0">
         <div class="col-12 d-flex justify-content-center">
-            <nav aria-label="Page navigation example">
+            <nav aria-label="Page navigation">
                 <ul class="pagination">
-                    <li class="page-item">
-                    <a class="page-link bg-transparent border-0" href="#" aria-label="Previous">
-                        <span aria-hidden="true" style="font-size:20px;color:#65031D;">&laquo;</span>
-                    </a>
+                    {{-- Tombol Previous --}}
+                    <li class="page-item {{ $projects->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link bg-transparent border-0" href="{{ $projects->previousPageUrl() }}" aria-label="Previous">
+                            <span aria-hidden="true" style="font-size:20px;color:#65031D;">&laquo;</span>
+                        </a>
                     </li>
-                    <li class="page-item"><a class="page-link bg-transparent border-0" href="#" style="font-size:20px;color:#65031D;">1</a></li>
-                    <li class="page-item"><a class="page-link bg-transparent border-0" href="#" style="font-size:20px;color:#65031D;">2</a></li>
-                    <li class="page-item"><a class="page-link bg-transparent border-0" href="#" style="font-size:20px;color:#65031D;">3</a></li>
-                    <li class="page-item">
-                    <a class="page-link bg-transparent border-0" href="#" aria-label="Next">
-                        <span aria-hidden="true" style="font-size:20px;color:#65031D;">&raquo;</span>
-                    </a>
+
+                    {{-- Menampilkan nomor halaman --}}
+                    @for ($i = 1; $i <= $projects->lastPage(); $i++)
+                        <li class="page-item {{ $projects->currentPage() == $i ? 'active' : '' }}">
+                            <a class="page-link bg-transparent border-0" href="{{ $projects->url($i) }}" style="font-size:20px;color:#65031D;">{{ $i }}</a>
+                        </li>
+                    @endfor
+
+                    {{-- Tombol Next --}}
+                    <li class="page-item {{ $projects->hasMorePages() ? '' : 'disabled' }}">
+                        <a class="page-link bg-transparent border-0" href="{{ $projects->nextPageUrl() }}" aria-label="Next">
+                            <span aria-hidden="true" style="font-size:20px;color:#65031D;">&raquo;</span>
+                        </a>
                     </li>
                 </ul>
             </nav>

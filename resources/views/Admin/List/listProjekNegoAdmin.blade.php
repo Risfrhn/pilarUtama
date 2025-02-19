@@ -1,4 +1,5 @@
 @include('header')
+@include('Component.alert')
 
 <div class="container">
     <div class="row">
@@ -18,15 +19,27 @@
         </div>
         <div class="col-12 col-md-6 col-lg-4 px-0">
             <div class="row g-1 mx-0 w-100 d-flex align-items-center"> 
-                <div class="col-8 col-md-8 col-lg-8 "> 
-                    <input class="form-control" type="text" placeholder="Search..." aria-label="default input example" style="background-color:#e0ddd7">
-                </div>
-                <div class="col-2 col-md-2 col-lg-2 "> 
-                    <button type="button" class="btn w-100" style="background-color:#65031D; color:#EEEBE5"><i class="bi bi-search"></i></button>
-                </div>
-                <div class="col-2 col-md-2 col-lg-2">
-                    <button type="button" class="btn w-100" style="background-color:#65031D; color:#EEEBE5"><i class="bi bi-filter"></i></button>
-                </div>
+                <form action="{{ route('projectsNego.view', ['status' => $status]) }}" method="GET" class="row g-1 mx-0 w-100">
+                    <div class="col-8 col-md-8 col-lg-8"> 
+                        <input class="form-control" type="text" name="search" placeholder="Search project name..." 
+                            value="{{ request('search') }}" style="background-color:#e0ddd7">
+                    </div>
+                    <div class="col-2 col-md-2 col-lg-2"> 
+                        <button type="submit" class="btn w-100" style="background-color:#65031D; color:#EEEBE5">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    <div class="col-2 col-md-2 col-lg-2">
+                        <select class="form-select" name="jenis_projek" onchange="this.form.submit()" style="background-color:#e0ddd7">
+                            <option value="">All Types</option>
+                            <option value="Architecture" {{ request('jenis_projek') == 'Architecture' ? 'selected' : '' }}>Architecture</option>
+                            <option value="Commercial_building" {{ request('jenis_projek') == 'Commercial_building' ? 'selected' : '' }}>Commercial Building</option>
+                            <option value="Interior" {{ request('jenis_projek') == 'Interior' ? 'selected' : '' }}>Interior</option>
+                            <option value="Landscape" {{ request('jenis_projek') == 'Landscape' ? 'selected' : '' }}>Landscape</option>
+                            <option value="Renovation" {{ request('jenis_projek') == 'Renovation' ? 'selected' : '' }}>Renovation</option>
+                        </select>
+                    </div>
+                </form>
             </div>
         </div>
         <ol class="breadcrumb ps-0 ps-md-3">
@@ -64,6 +77,13 @@
                                             data-bs-target="#updateProjekModal">
                                             Edit
                                         </button>
+                                        <form action="{{ route('projectNego.destroy', ['status' => $status, 'id' => $project->id]) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this project?')">
+                                                Delete
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -213,6 +233,28 @@
     });
 </script>
 
+@if(session('error'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('error') }}", "danger");
+        });
+    </script>
+@endif
 
+@if(session('success'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('success') }}", "success");
+        });
+    </script>
+@endif
+
+@if(session('info'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('info') }}", "info");
+        });
+    </script>
+@endif
 
 @include('footer')

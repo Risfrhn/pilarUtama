@@ -118,9 +118,26 @@ class AdminController extends Controller
 
     #PROJEK
     ##List projek
-    public function showProject($status)
+    public function showProject(Request $request, $status)
     {
         $projects = Project::where('status', $status)->get();
+
+        $query = Project::query();
+    
+        // Filter by status
+        $query->where('status', $status);
+    
+        // Search by name
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+    
+        // Filter by jenis_projek
+        if ($request->filled('jenis_projek')) {
+            $query->where('jenis_projek', $request->jenis_projek);
+        }
+    
+        $projects = $query->paginate(8); 
         
 
         return view('Admin.List.listProjek', compact(
@@ -130,13 +147,45 @@ class AdminController extends Controller
     }
 
     ###List projek Nego
-    public function showProjectNego($status)
+    public function showProjectNego(Request $request, $status)
     {
         $projects = Project::where('status', $status)->get();
+
+        $query = Project::query();
+    
+        // Filter by status
+        $query->where('status', $status);
+    
+        // Search by name
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+    
+        // Filter by jenis_projek
+        if ($request->filled('jenis_projek')) {
+            $query->where('jenis_projek', $request->jenis_projek);
+        }
+    
+        $projects = $query->paginate(8); 
 
         return view('Admin.List.listProjekNegoAdmin', compact('projects','status'));
     }
 
+    public function deleteNegoProject($status, $id)
+    {
+        try {
+            $project = Project::findOrFail($id);
+            $project->delete();
+            
+            return redirect()
+                ->route('projectsNego.view', ['status' => $status])
+                ->with('success', 'Project deleted successfully');
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('projectsNego.view', ['status' => $status])
+                ->with('error', 'Failed to delete project');
+        }
+    }
 
 
     ##Tambah projek

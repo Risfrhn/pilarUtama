@@ -39,6 +39,7 @@ Route::get('/projects/status/{status}', [AdminController::class, 'showProject'])
 Route::get('/projects/negotiation/{status}', [AdminController::class, 'showProjectNego'])->middleware('auth')->name('projectsNego.view');
 Route::put('/projects/negotiation/{status}/{id}/update',[AdminController::class, 'updateProjectNego'])->middleware('auth')->name('projectNego.update');
 Route::delete('/projects/{project_id}', [AdminController::class, 'deleteProject'])->middleware('auth')->name('projects.delete');
+Route::delete('/projects/{status}/{id}', [AdminController::class, 'deleteNegoProject'])->name('projectNego.destroy');
 ## detail projek
 Route::get('/projects/status/{status}/{id}', [AdminController::class, 'showProjectDetail'])->middleware('auth')->name('projectsDetail.view');
 Route::put('/projects/status/{status}/{id}/update',[AdminController::class, 'updateProject'])->middleware('auth')->name('projects.update');
