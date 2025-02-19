@@ -1,9 +1,9 @@
 @include('header')
-
+@include('Component.alert')
 
 <div class="container mt-1">
     <div class="row">
-        <div class="col-md-6 col-lg-8 d-none d-md-block">
+        <div class="col-md-6 col-lg-8 text-center text-md-start">
             <h1 style="color:#65031D;">
                 @php
                     $statusNames = [
@@ -31,6 +31,10 @@
             </div>
         </div>
     </div>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" style="font-size:10px;"><a href="{{route('dashboardAdmin.view')}}">Home</a></li>
+        <li class="breadcrumb-item active" style="font-size:10px;"aria-current="page">List Projek</li>
+    </ol>
     <div class="row mt-3">
         @foreach($projects as $project)
         <div class="col-12 col-md-6 col-lg-4 col-xl-3 g-2 d-flex justify-content-center">
@@ -38,7 +42,7 @@
             <a href="{{ route('projectsDetail.view', ['status' => $project->status, 'id' => $project->id]) }}" class="card-link" style="text-decoration: none;">
                 <div class="card overflow-hidden rounded-4 my-1" style="cursor: pointer;">
                     <!-- Gambar Full dengan Sudut Rounded -->
-                    <img src="{{ asset($project->gambarflyer) }}" class="card-img-top" alt="Card Image" style="width: 100%; height: auto; object-fit: cover; aspect-ratio: 2 / 3; ">
+                    <img src="{{ asset($project->gambarflyer ?: 'images/no-image.jpg') }}" class="card-img-top" alt="Card Image" style="width: 100%; height: auto; object-fit: cover; aspect-ratio: 2 / 3; ">
 
                     <!-- Pojok Kiri Atas (Angka) -->
                     <div class="position-absolute top-0 start-0 text-dark px-3 py-2 rounded-bottom">
@@ -154,6 +158,30 @@
     </div>
 </div>
 
+
+@if(session('error'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('error') }}", "danger");
+        });
+    </script>
+@endif
+
+@if(session('success'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('success') }}", "success");
+        });
+    </script>
+@endif
+
+@if(session('info'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('info') }}", "info");
+        });
+    </script>
+@endif
 
 
 @include('footer')

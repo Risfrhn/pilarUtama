@@ -129,19 +129,29 @@ class AdminController extends Controller
         ));
     }
 
+    ###List projek Nego
+    public function showProjectNego($status)
+    {
+        $projects = Project::where('status', $status)->get();
+
+        return view('Admin.List.listProjekNegoAdmin', compact('projects','status'));
+    }
+
+
+
     ##Tambah projek
     public function storeProject(Request $request)
     {
         try {
             // Validasi input
             $request->validate([
-                'name' => 'required|string|max:255',
-                'description1' => 'required|string|max:10000',
+                'name' => 'nullable|string|max:255',
+                'description1' => 'nullable|string|max:10000',
                 'description2' => 'nullable|string|max:10000',
-                'jenis_projek' => 'required|string|max:255',
-                'target_pengerjaan_start' => 'required|date',
-                'target_pengerjaan_end' => 'required|date|after_or_equal:target_pengerjaan_start',
-                'status' => 'required|string|max:50',
+                'jenis_projek' => 'nullable|string|max:255',
+                'target_pengerjaan_start' => 'nullable|date',
+                'target_pengerjaan_end' => 'nullable|date|after_or_equal:target_pengerjaan_start',
+                'status' => 'nullable|string|max:50',
                 'gambarflyer' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240', // max 10MB
             ]);
     
@@ -192,12 +202,14 @@ class AdminController extends Controller
     public function showProjectDetail($status, $id)
     {
         $detailProject = Project::findOrFail($id);
+        $projects = Project::where('status', $status)->get();
 
         // Ambil gambar berdasarkan project_id
         $projectBefores = ProjectBefore::where('project_id', $id)->get();
         $projectAfters = ProjectAfter::where('project_id', $id)->get();
+        $projectVideo = ProjectVideo::where('project_id', $id)->get();
         
-        return view('Admin.Detail.detailProjekAdmin',compact('detailProject', 'projectBefores', 'projectAfters'));
+        return view('Admin.Detail.detailProjekAdmin',compact('detailProject', 'projectBefores', 'projectAfters', 'projectVideo', 'status'));
     }
 
 
@@ -220,7 +232,7 @@ class AdminController extends Controller
                 'foto_after' => 'nullable|array', // Multiple files
                 'foto_after.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
                 'video' => 'nullable|array', // Multiple files
-                'video.*' => 'nullable|mimes:mp4,mov,avi|max:10240', // max 10MB for video
+                'video.*' => 'nullable|mimes:mp4,mov,avi|max:1048576', // max 10MB for video
             ]);
     
             // Cari proyek berdasarkan ID
@@ -323,16 +335,215 @@ class AdminController extends Controller
                 }
             }
     
-            return redirect()->route('projectsDetail.view', [
-                'status' => $project->status,
-                'id' => $project->id
-            ])->with('success', 'Proyek berhasil diperbarui!');
+            if ($project->status === 'negotiation') {
+                return redirect()->route('projectsNego.view', [
+                    'status' => $project->status,
+                    'id' => $project->id
+                ])->with('success', 'Proyek berhasil diperbarui!');
+            } else {
+                return redirect()->route('projectsDetail.view', [
+                    'status' => $project->status,
+                    'id' => $project->id
+                ])->with('success', 'Proyek berhasil diperbarui!');
+            }
+            
     
         } catch (\Exception $e) {
             return redirect()->route('dashboardAdmin.view')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-    
 
+    public function updateProjectNego(Request $request, $status, $id)
+    {
+        $project = null; // Declare the $project variable outside try block
+        try {
+            // Validasi input
+            $request->validate([
+                'name' => 'nullable|string|max:255',
+                'description1' => 'nullable|string|max:10000',
+                'jenis_projek' => 'nullable|string|max:255',
+                'status' => 'nullable|string|max:50',
+            ]);
+    
+            // Cari proyek berdasarkan ID
+            $project = Project::findOrFail($id);
+            
+            // Update hanya jika ada perubahan
+            if ($request->has('name') && $request->name !== $project->name) {
+                $project->name = $request->name;
+            }
+            if ($request->has('description1') && $request->description1 !== $project->description1) {
+                $project->description1 = $request->description1;
+            }
+            if ($request->has('jenis_projek') && $request->jenis_projek !== $project->jenis_projek) {
+                $project->jenis_projek = $request->jenis_projek;
+            }
+            
+            if ($request->has('status') && $request->status !== $project->status) {
+                $project->status = $request->status;
+            }
+    
+            
+    
+            // Simpan data proyek yang telah diupdate jika ada perubahan
+            if ($project->isDirty()) {
+                $project->save();
+            }
+    
+            if ($project->status === 'negotiation') {
+                return redirect()->route('projectsNego.view', [
+                    'status' => $project->status,
+                    'id' => $project->id
+                ])->with('success', 'Proyek berhasil diperbarui!');
+            } else {
+                return redirect()->route('projectsDetail.view', [
+                    'status' => $project->status,
+                    'id' => $project->id
+                ])->with('success', 'Proyek berhasil diperbarui!');
+            }
+            
+    
+        } catch (\Exception $e) {
+            return redirect()->route('dashboardAdmin.view')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function deleteImage($project_id, $image_id, $type)
+    {
+        try {
+            // Cari proyek berdasarkan ID
+            $project = Project::findOrFail($project_id);
+
+            // Tentukan model dan path berdasarkan tipe gambar
+            if ($type == 'before') {
+                $image = ProjectBefore::findOrFail($image_id);
+                $folderPath = public_path('images/projects/' . Str::slug($project->name) . '/before');
+            } else if ($type == 'after') {
+                $image = ProjectAfter::findOrFail($image_id);
+                $folderPath = public_path('images/projects/' . Str::slug($project->name) . '/after');
+            } else {
+                return redirect()->route('projectsDetail.view', ['status' => $project->status, 'id' => $project->id])->with('error', 'Tipe gambar tidak dikenal.');
+            }
+
+            // Hapus file gambar dari folder
+            $filePath = $image->image;
+            if (file_exists(public_path($filePath))) {
+                unlink(public_path($filePath)); // Menghapus file dari server
+            }
+
+            // Hapus record gambar dari database
+            $image->delete();
+
+            // Hapus folder jika kosong
+            if ($this->isDirectoryEmpty($folderPath)) {
+                rmdir($folderPath); // Menghapus folder jika kosong
+            }
+
+            return redirect()->route('projectsDetail.view', ['status' => $project->status, 'id' => $project->id])->with('success', 'Gambar berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->route('projectsDetail.view', ['status' => $project->status, 'id' => $project->id])->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function deleteVideo($project_id, $video_id)
+    {
+        try {
+            // Cari proyek berdasarkan ID
+            $project = Project::findOrFail($project_id);
+
+            // Cari video berdasarkan ID
+            $video = ProjectVideo::findOrFail($video_id);
+
+            // Tentukan path video dan folder
+            $filePath = $video->video;
+            $videoFolder = dirname(public_path($filePath)); // Folder tempat video berada
+
+            // Hapus file video dari server
+            if (file_exists(public_path($filePath))) {
+                unlink(public_path($filePath)); // Menghapus file dari server
+            }
+
+            // Hapus record video dari database
+            $video->delete();
+
+            // Hapus folder video jika kosong
+            if ($this->isDirectoryEmpty($videoFolder)) {
+                rmdir($videoFolder); // Menghapus folder video jika kosong
+            }
+
+            return redirect()->route('projectsDetail.view', ['status' => $project->status, 'id' => $project->id])->with('success', 'Video berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->route('projectsDetail.view', ['status' => $project->status, 'id' => $project->id])->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    private function isDirectoryEmpty($dir)
+    {
+        // Mengembalikan true jika folder kosong
+        return (is_dir($dir) && count(scandir($dir)) == 2); // Hanya ada . dan .. di dalam folder
+    }
+
+
+    public function deleteProject($project_id)
+    {
+        try {
+            // Cari proyek berdasarkan ID
+            $project = Project::findOrFail($project_id);
+            $status = $project->status;  // Ambil status proyek yang dihapus
+
+            // Tentukan folder terkait proyek
+            $projectFolder = public_path('images/projects/' . Str::slug($project->name));
+            $videoFolder = public_path('videos/projects/' . Str::slug($project->name));
+
+            // Hapus folder gambar sebelum dan sesudah proyek
+            if (is_dir($projectFolder . '/before')) {
+                $this->deleteFolder($projectFolder . '/before');
+            }
+
+            if (is_dir($projectFolder . '/after')) {
+                $this->deleteFolder($projectFolder . '/after');
+            }
+
+            // Hapus folder video proyek jika ada
+            if (is_dir($projectFolder)) {
+                $this->deleteFolder($projectFolder);
+            }
+
+            // Hapus folder video proyek jika ada
+            if (is_dir($videoFolder)) {
+                $this->deleteFolder($videoFolder);
+            }
+
+            // Hapus proyek dari database
+            $project->delete();
+
+            // Redirect ke halaman dengan status yang sesuai
+            return redirect()->route('projects.view', ['status' => $status])->with('success', 'Proyek berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->route('projects.view', ['status' => $status])->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    // Fungsi untuk menghapus folder beserta isinya
+    private function deleteFolder($folderPath)
+    {
+        // Mengambil semua isi folder
+        $files = array_diff(scandir($folderPath), array('.', '..'));
+
+        foreach ($files as $file) {
+            $filePath = $folderPath . DIRECTORY_SEPARATOR . $file;
+
+            if (is_dir($filePath)) {
+                // Jika folder, panggil fungsi ini untuk menghapus subfolder
+                $this->deleteFolder($filePath);
+            } else {
+                // Jika file, hapus file
+                unlink($filePath);
+            }
+        }
+
+        // Setelah semua file dihapus, hapus folder itu sendiri
+        rmdir($folderPath);
+    }
 
 }

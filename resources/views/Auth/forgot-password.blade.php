@@ -12,7 +12,7 @@
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="form-group mb-3">
-                    <input type="email" name="email" class="form-control border-2 rounded-1 w-100 bg-transparent" style="border-color:#65031D;" value="{{ old('email') }}">
+                    <input type="email" name="email" class="form-control border-2 rounded-1 w-100 bg-transparent" style="border-color:#65031D;" value="{{ old('email') }}" required>
                     @error('email')
                         <div class="text-danger mt-1">{{ $message }}</div>
                     @enderror

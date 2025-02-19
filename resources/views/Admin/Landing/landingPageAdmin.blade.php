@@ -133,14 +133,18 @@
             </div>
 
             <!-- Negotiation Projects -->
-            <div class="col-6 col-lg-3 g-2">
-                <a href="{{ route('projects.view', ['status' => 'negotiation']) }}" style="text-decoration:none;color:black;">
-                    <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
-                        <h3 class="mt-3" style="color:#65031D;">{{ $negotiationProjects }}+</h3>
-                        <p>Negotiation Stages</p>
-                    </div>
-                </a>
-            </div>
+            
+                <div class="col-6 col-lg-3 g-2">
+                    <a href="{{ route('projectsNego.view', ['status' => 'negotiation']) }}"  
+                    style="text-decoration:none;color:black;">
+                        <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
+                            <h3 class="mt-3" style="color:#65031D;">{{ $negotiationProjects }}+</h3>
+                            <p>Negotiation Stages</p>
+                        </div>
+                    </a>
+                </div>
+          
+
         </div>    
     </div>
 </div>
@@ -391,7 +395,6 @@
 </div>
 
 
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         let activeTab = "desc-architectur";
@@ -419,6 +422,34 @@
         });
     });
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const statusSelect = document.getElementById("status");
+        const description2 = document.getElementById("description2").closest(".mb-3");
+        const targetStart = document.getElementById("target_pengerjaan_start").closest(".mb-3");
+        const targetEnd = document.getElementById("target_pengerjaan_end").closest(".mb-3");
+        const gambarflyer = document.getElementById("gambarflyer").closest(".mb-3");
+
+        function toggleFields() {
+            if (statusSelect.value === "negotiation") {
+                description2.style.display = "none";
+                targetStart.style.display = "none";
+                targetEnd.style.display = "none";
+                gambarflyer.style.display = "none";
+            } else {
+                description2.style.display = "block";
+                targetStart.style.display = "block";
+                targetEnd.style.display = "block";
+                gambarflyer.style.display = "block";
+            }
+        }
+
+        statusSelect.addEventListener("change", toggleFields);
+        toggleFields(); // Panggil saat halaman dimuat untuk memastikan inputan disembunyikan jika perlu
+    });
+</script>
+
 
 @if(session('login_success'))
     <script>

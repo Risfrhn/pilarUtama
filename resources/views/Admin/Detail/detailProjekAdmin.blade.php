@@ -1,11 +1,13 @@
 @include('header')
+@include('Component.alert')
 
 <div class="container mb-5">
     <h1 style="color:#65031D;">{{ $detailProject->name }}</h1>
     <div class="w-100 border border-1 border-dark mb-3"></div>
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item" style="font-size:10px;"><a href="#">Home</a></li>
+            <li class="breadcrumb-item" style="font-size:10px;"><a href="{{route('dashboardAdmin.view')}}">Home</a></li>
+            <li class="breadcrumb-item" style="font-size:10px;"><a href="{{ route('projects.view', ['status' => $status]) }}">List Projek</a></li>
             <li class="breadcrumb-item active" style="font-size:10px;"aria-current="page">Detail project</li>
         </ol>
     </nav>
@@ -18,7 +20,12 @@
                     <div class="carousel-inner h-100 rounded-2" style="color:#65031D; border: 2px solid #65031D;">
                         @foreach ($projectBefores as $index => $projectBefore)
                             <div class="carousel-item active h-100 {{ $index == 0 ? 'active' : '' }}">
-                                <img src="{{ asset($projectBefore->image) }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
+                                <img src="{{ asset($projectBefore->image ?: 'images/no-image.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
+                                <form class="position-absolute top-0 start-0 p-2" action="{{ route('projects.deleteImage', ['project_id' => $detailProject->id, 'image_id' => $projectBefore->id, 'type' => 'before']) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                </form>
                             </div>
                         @endforeach
                     </div>
@@ -40,11 +47,22 @@
                 {{ $detailProject->description1 }}
                 </p>
             </div>
-            <div class="d-flex justify-content-center mb-2">
-                <video autoplay loop muted playsinline class="video-fluid rounded-2" style="width: 100%; max-width: 400px; height: auto; color:#65031D; border: 2px solid #65031D;">
-                    <source src="{{ asset('video/PilarUtama.mp4') }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+            <div class="d-flex justify-content-center mb-2 position-relative">
+                @foreach ($projectVideo as $index => $projectVideo)
+                    <div class="position-relative">
+                        <video autoplay loop muted playsinline class="video-fluid rounded-2" style="width: 100%; max-width: 400px; height: auto; color:#65031D; border: 2px solid #65031D;" alt="Empty video">
+                            <source src="{{ asset($projectVideo->video) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        
+                        <!-- Tombol hapus -->
+                        <form action="{{ route('projects.deleteVideo', ['project_id' => $detailProject->id, 'video_id' => $projectVideo->id]) }}" method="POST" class="position-absolute top-0 end-0 p-2" style="z-index: 1;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form>
+                    </div>
+                @endforeach
             </div>
             <div>
                 <h1 style="font-size:20px;color:#65031D;">Problem Client</h1>
@@ -53,7 +71,7 @@
                 </p>
             </div>
             <div>
-                <h1 style="font-size:15px;color:#65031D;">[ Target Pengerjaan ] {{ $detailProject->target_pengerjaan_start }} - {{ $detailProject->target_pengerjaan_end }}</h1>
+                <h1 style="font-size:14px;color:#65031D;">[ Target Pengerjaan ] {{ $detailProject->target_pengerjaan_start }} - {{ $detailProject->target_pengerjaan_end }}</h1>
             </div>
         </div>
 
@@ -66,7 +84,12 @@
                     <div class="carousel-inner h-100 rounded-2" style="color:#65031D; border: 2px solid #65031D;">
                         @foreach ($projectAfters as $index => $projectAfters)
                             <div class="carousel-item active h-100 {{ $index == 0 ? 'active' : '' }}">
-                                <img src="{{ asset($projectAfters->image) }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
+                                <img src="{{ asset($projectAfters->image ?: 'images/no-image.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
+                                <form class="position-absolute top-0 start-0 p-2" action="{{ route('projects.deleteImage', ['project_id' => $detailProject->id, 'image_id' => $projectBefore->id, 'type' => 'before']) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                </form>
                             </div>
                         @endforeach
                     </div>
@@ -87,6 +110,14 @@
 <button type="button" class="btn btn-lg end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:0px" data-bs-toggle="modal" data-bs-target="#tambahProjekModal">
     <i class="bi bi-pencil"></i>
 </button>
+
+<form action="{{ route('projects.delete', ['project_id' => $detailProject->id]) }}" method="POST" class="d-inline">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-lg  end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:50px">
+        <i class="bi bi-trash-fill"></i>
+    </button>
+</form>
 
 <div class="modal fade" id="tambahProjekModal" tabindex="-1" aria-labelledby="tambahProjekLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -125,11 +156,11 @@
                             <div class="mb-3">
                                 <label for="jenis_projek" class="form-label">Jenis Proyek</label>
                                 <select class="form-select" id="jenis_projek" name="jenis_projek" value="{{ $detailProject->jenis_projek }}">
-                                    <option value="Architecture">Architecture</option>
-                                    <option value="Commercial_building">Commercial Building</option>
-                                    <option value="Interior">Interior</option>
-                                    <option value="Landscape">Landscape</option>
-                                    <option value="Renovation">Renovation</option>
+                                    <option value="Architecture" {{ $detailProject->jenis_projek == 'Architecture' ? 'selected' : '' }}>Architecture</option>
+                                    <option value="Commercial_building" {{ $detailProject->jenis_projek == 'Commercial_building' ? 'selected' : '' }}>Commercial Building</option>
+                                    <option value="Interior" {{ $detailProject->jenis_projek == 'Interior' ? 'selected' : '' }}>Interior</option>
+                                    <option value="Landscape" {{ $detailProject->jenis_projek == 'Landscape' ? 'selected' : '' }}>Landscape</option>
+                                    <option value="Renovation" {{ $detailProject->jenis_projek == 'Renovation' ? 'selected' : '' }}>Renovation</option>
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -143,10 +174,10 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">Status</label>
                                 <select class="form-select" id="status" name="status" value="{{ $detailProject->status }}">
-                                    <option value="ongoing">On going</option>
-                                    <option value="beingDesign">Being Design</option>
-                                    <option value="finished">Finished</option>
-                                    <option value="negotiation">Negotiation</option>
+                                    <option value="ongoing" {{ $detailProject->status == 'ongoing' ? 'selected' : '' }}>On going</option>
+                                    <option value="beingDesign" {{ $detailProject->status == 'beingDesign' ? 'selected' : '' }}>Being Design</option>
+                                    <option value="finished" {{ $detailProject->status == 'finished' ? 'selected' : '' }}>Finished</option>
+                                    <option value="negotiation" {{ $detailProject->status == 'negotiation' ? 'selected' : '' }}>Negotiation</option>
                                 </select>
                             </div>
                         </div>
@@ -170,7 +201,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="video" class="form-label">Upload Video</label>
-                                <input type="file" class="form-control" id="video" name="video">
+                                <input type="file" class="form-control" id="video" name="video[]">
                             </div>
                         </div>
                     </div>
@@ -183,6 +214,31 @@
         </div>
     </div>
 </div>
+
+
+@if(session('error'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('error') }}", "danger");
+        });
+    </script>
+@endif
+
+@if(session('success'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('success') }}", "success");
+        });
+    </script>
+@endif
+
+@if(session('info'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showToast("{{ session('info') }}", "info");
+        });
+    </script>
+@endif
 
 
 
