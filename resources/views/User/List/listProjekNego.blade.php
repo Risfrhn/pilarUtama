@@ -29,20 +29,16 @@
                         </button>
                     </div>
                     <div class="col-2 col-md-2 col-lg-2">
-                        <select class="form-select" name="jenis_projek" onchange="this.form.submit()" style="background-color:#e0ddd7">
-                            <option value="">All Types</option>
-                            <option value="Architecture" {{ request('jenis_projek') == 'Architecture' ? 'selected' : '' }}>Architecture</option>
-                            <option value="Commercial_building" {{ request('jenis_projek') == 'Commercial_building' ? 'selected' : '' }}>Commercial Building</option>
-                            <option value="Interior" {{ request('jenis_projek') == 'Interior' ? 'selected' : '' }}>Interior</option>
-                            <option value="Landscape" {{ request('jenis_projek') == 'Landscape' ? 'selected' : '' }}>Landscape</option>
-                            <option value="Renovation" {{ request('jenis_projek') == 'Renovation' ? 'selected' : '' }}>Renovation</option>
-                        </select>
+                        <button type="button" class="btn w-100" data-bs-toggle="modal" data-bs-target="#filterModal" 
+                            style="background-color:#65031D; color:#EEEBE5">
+                            <i class="bi bi-funnel"></i> <!-- Ikon Filter -->
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
         <ol class="breadcrumb ps-0 ps-md-3">
-            <li class="breadcrumb-item" style="font-size:10px;"><a href="{{route('dashboardAdmin.view')}}">Home</a></li>
+            <li class="breadcrumb-item" style="font-size:10px;"><a href="{{route('dashboardUser.view')}}">Home</a></li>
             <li class="breadcrumb-item active" style="font-size:10px;"aria-current="page">List Projek</li>
         </ol>
         @if ($projects->isNotEmpty() && $projects->where('status', $status)->isNotEmpty())
@@ -78,6 +74,33 @@
                 <p class="text-muted">No projects found with {{ $statusNames[$status] ?? 'Unknown Status' }}</p>
             </div>
         @endif
+    </div>
+</div>
+
+<!-- Modal filter -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel">Filter Jenis Proyek</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="GET" action="{{ route('projectsNegoUser.view', ['status' => $status]) }}">
+                    <div class="mb-3">
+                        <label class="form-label">Pilih Jenis Proyek:</label>
+                        <select class="form-select" name="jenis_projek" onchange="this.form.submit()" style="background-color:#e0ddd7">
+                            <option value="">All Types</option>
+                            <option value="Architecture" {{ request('jenis_projek') == 'Architecture' ? 'selected' : '' }}>Architecture</option>
+                            <option value="Commercial_building" {{ request('jenis_projek') == 'Commercial_building' ? 'selected' : '' }}>Commercial Building</option>
+                            <option value="Interior" {{ request('jenis_projek') == 'Interior' ? 'selected' : '' }}>Interior</option>
+                            <option value="Landscape" {{ request('jenis_projek') == 'Landscape' ? 'selected' : '' }}>Landscape</option>
+                            <option value="Renovation" {{ request('jenis_projek') == 'Renovation' ? 'selected' : '' }}>Renovation</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 

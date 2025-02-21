@@ -29,14 +29,10 @@
                         </button>
                     </div>
                     <div class="col-2 col-md-2 col-lg-2">
-                        <select class="form-select" name="jenis_projek" onchange="this.form.submit()" style="background-color:#e0ddd7">
-                            <option value="">All Types</option>
-                            <option value="Architecture" {{ request('jenis_projek') == 'Architecture' ? 'selected' : '' }}>Architecture</option>
-                            <option value="Commercial_building" {{ request('jenis_projek') == 'Commercial_building' ? 'selected' : '' }}>Commercial Building</option>
-                            <option value="Interior" {{ request('jenis_projek') == 'Interior' ? 'selected' : '' }}>Interior</option>
-                            <option value="Landscape" {{ request('jenis_projek') == 'Landscape' ? 'selected' : '' }}>Landscape</option>
-                            <option value="Renovation" {{ request('jenis_projek') == 'Renovation' ? 'selected' : '' }}>Renovation</option>
-                        </select>
+                        <button type="button" class="btn w-100" data-bs-toggle="modal" data-bs-target="#filterModal" 
+                            style="background-color:#65031D; color:#EEEBE5">
+                            <i class="bi bi-funnel"></i> <!-- Ikon Filter -->
+                        </button>
                     </div>
                 </form>
             </div>
@@ -47,34 +43,40 @@
         <li class="breadcrumb-item active" style="font-size:10px;"aria-current="page">List Projek</li>
     </ol>
     <div class="row mt-3">
+    @if ($projects->isNotEmpty() && $projects->where('status', $status)->isNotEmpty())
         @foreach($projects as $project)
-        <div class="col-12 col-md-6 col-lg-4 col-xl-3 g-2 d-flex justify-content-center">
-            <!-- Membungkus card dengan tag <a> untuk menjadikannya link -->
-            <a href="{{ route('projectsDetailUser.view', ['status' => $project->status, 'id' => $project->id]) }}" class="card-link" style="text-decoration: none;">
-                <div class="card overflow-hidden rounded-4 my-1" style="cursor: pointer;">
-                    <!-- Gambar Full dengan Sudut Rounded -->
-                    <img src="{{ asset($project->gambarflyer ?: 'images/no-image.jpg') }}" class="card-img-top" alt="Card Image" style="width: 100%; height: auto; object-fit: cover; aspect-ratio: 2 / 3; ">
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3 g-2 d-flex justify-content-center">
+                <!-- Membungkus card dengan tag <a> untuk menjadikannya link -->
+                <a href="{{ route('projectsDetailUser.view', ['status' => $project->status, 'id' => $project->id]) }}" class="card-link" style="text-decoration: none;">
+                    <div class="card overflow-hidden rounded-4 my-1" style="cursor: pointer;">
+                        <!-- Gambar Full dengan Sudut Rounded -->
+                        <img src="{{ asset($project->gambarflyer ?: 'images/no-image.jpg') }}" class="card-img-top" alt="Card Image" style="width: 100%; height: auto; object-fit: cover; aspect-ratio: 2 / 3; ">
 
-                    <!-- Pojok Kiri Atas (Angka) -->
-                    <div class="position-absolute top-0 start-0 text-dark px-3 py-2 rounded-bottom">
-                        {{ $loop->iteration }} <!-- Menampilkan nomor urut data -->
-                    </div>
+                        <!-- Pojok Kiri Atas (Angka) -->
+                        <div class="position-absolute top-0 start-0 text-dark px-3 py-2 rounded-bottom">
+                            {{ $loop->iteration }} <!-- Menampilkan nomor urut data -->
+                        </div>
 
-                    <!-- Pojok Kanan Atas (Kotak Rounded dengan Teks) -->
-                    <div class="position-absolute top-0 end-0 text-dark border border-1 border-dark px-3 py-1 mx-3 my-2 rounded-5" 
-                        style="background-color:#EEEBE5;font-size:10px">
-                        {{ $project->name }} <!-- Nama proyek -->
-                    </div>
+                        <!-- Pojok Kanan Atas (Kotak Rounded dengan Teks) -->
+                        <div class="position-absolute top-0 end-0 text-dark border border-1 border-dark px-3 py-1 mx-3 my-2 rounded-5" 
+                            style="background-color:#EEEBE5;font-size:10px">
+                            {{ $project->name }} <!-- Nama proyek -->
+                        </div>
 
-                    <!-- Pojok Kanan Bawah (Lingkaran) -->
-                    <div class="position-absolute bottom-0 end-0 mx-3 my-2 text-dark border border-1 border-dark rounded-circle d-flex align-items-center justify-content-center" 
-                        style="background-color:#EEEBE5;width: 40px; height: 40px;">
-                        <i class="bi bi-arrow-right" style="color:#65031D;"></i>
+                        <!-- Pojok Kanan Bawah (Lingkaran) -->
+                        <div class="position-absolute bottom-0 end-0 mx-3 my-2 text-dark border border-1 border-dark rounded-circle d-flex align-items-center justify-content-center" 
+                            style="background-color:#EEEBE5;width: 40px; height: 40px;">
+                            <i class="bi bi-arrow-right" style="color:#65031D;"></i>
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
         @endforeach
+    @else
+        <div class="col-12 text-center">
+            <p class="text-muted">No projects found with {{ $statusNames[$status] ?? 'Unknown Status' }}</p>
+        </div>
+    @endif
     </div>
     <div class="row mt-4 mb-0">
         <div class="col-12 d-flex justify-content-center">
@@ -102,6 +104,33 @@
                     </li>
                 </ul>
             </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Modal filter -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel">Filter Jenis Proyek</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="GET" action="{{ route('projectsUser.view', ['status' => $status]) }}">
+                    <div class="mb-3">
+                        <label class="form-label">Pilih Jenis Proyek:</label>
+                        <select class="form-select" name="jenis_projek" onchange="this.form.submit()" style="background-color:#e0ddd7">
+                            <option value="">All Types</option>
+                            <option value="Architecture" {{ request('jenis_projek') == 'Architecture' ? 'selected' : '' }}>Architecture</option>
+                            <option value="Commercial_building" {{ request('jenis_projek') == 'Commercial_building' ? 'selected' : '' }}>Commercial Building</option>
+                            <option value="Interior" {{ request('jenis_projek') == 'Interior' ? 'selected' : '' }}>Interior</option>
+                            <option value="Landscape" {{ request('jenis_projek') == 'Landscape' ? 'selected' : '' }}>Landscape</option>
+                            <option value="Renovation" {{ request('jenis_projek') == 'Renovation' ? 'selected' : '' }}>Renovation</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

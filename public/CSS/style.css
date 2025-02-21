@@ -1,3 +1,53 @@
+/* component all */
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+input:required:invalid {
+    border: 2px solid red;
+}
+
+.nav-tabs .nav-link {
+    background-color: transparent; /* Warna background transparan */
+    color: #65031D; /* Warna teks */
+    border: none; /* Menghilangkan border bawaan */
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link:focus,
+.nav-tabs .nav-link:hover {
+    background-color: #65031D; /* Warna saat aktif */
+    color: #EEEBE5; /* Warna teks tetap */
+}
+
+.form-control{
+    background-color:transparent;
+    border: 2px solid #65031D;
+}
+
+.modal-content{
+    background-color:#EEEBE5;
+}
+
+.btnClose{
+    border:2px solid #65031D;
+    border-radius:5px;
+    font-size:20px;
+    background-color:transparent;
+}
+
+.btnSubmit{
+    border:2px solid #65031D;
+    border-radius:5px;
+    font-size:20px;
+    color: #EEEBE5;
+    background-color:#65031D;
+}
+
+
+
+
+
 /* responsive */
 
 .custom-font-h1{

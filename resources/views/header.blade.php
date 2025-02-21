@@ -19,15 +19,6 @@
     <!-- CSS -->    
     <link rel="stylesheet" href="{{ asset('CSS/style.css') }}">
 
-
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        input:required:invalid {
-            border: 2px solid red;
-        }
-    </style>
 </head>
 <body class="d-flex flex-column min-vh-100" style="background-color: #EEEBE5">
     

@@ -30,14 +30,10 @@
                         </button>
                     </div>
                     <div class="col-2 col-md-2 col-lg-2">
-                        <select class="form-select" name="jenis_projek" onchange="this.form.submit()" style="background-color:#e0ddd7">
-                            <option value="">All Types</option>
-                            <option value="Architecture" {{ request('jenis_projek') == 'Architecture' ? 'selected' : '' }}>Architecture</option>
-                            <option value="Commercial_building" {{ request('jenis_projek') == 'Commercial_building' ? 'selected' : '' }}>Commercial Building</option>
-                            <option value="Interior" {{ request('jenis_projek') == 'Interior' ? 'selected' : '' }}>Interior</option>
-                            <option value="Landscape" {{ request('jenis_projek') == 'Landscape' ? 'selected' : '' }}>Landscape</option>
-                            <option value="Renovation" {{ request('jenis_projek') == 'Renovation' ? 'selected' : '' }}>Renovation</option>
-                        </select>
+                        <button type="button" class="btn w-100" data-bs-toggle="modal" data-bs-target="#filterModal" 
+                            style="background-color:#65031D; color:#EEEBE5">
+                            <i class="bi bi-funnel"></i> <!-- Ikon Filter -->
+                        </button>
                     </div>
                 </form>
             </div>
@@ -67,7 +63,7 @@
                                 <div id="collapse{{ $project->id }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                     <div class="accordion-body text-dark">
                                         <p>{{ $project->description1 }}</p>
-                                        <button class="btn btn-primary btn-edit"
+                                        <button class="btn" style="background-color:#65031D;color:#EEEBE5"
                                             data-id="{{ $project->id }}"
                                             data-name="{{ $project->name }}"
                                             data-description1="{{ $project->description1 }}"
@@ -75,13 +71,13 @@
                                             data-status="{{ $project->status ?? 'N/A'}}"
                                             data-bs-toggle="modal"
                                             data-bs-target="#updateProjekModal">
-                                            Edit
+                                            <i class="bi bi-pencil-fill"></i>
                                         </button>
                                         <form id="delete-form" action="{{ route('projectNego.destroy', ['status' => $status, 'id' => $project->id]) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-danger" onclick="showDeleteConfirmation()">
-                                                Delete
+                                            <button type="button" class="btn" style="background-color:#65031D;color:#EEEBE5" onclick="showDeleteConfirmation()">
+                                                <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -143,8 +139,8 @@
                         </select>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btnClose" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btnSubmit">Save changes</button>
                     </div>
                 </form>
             </div>
@@ -202,8 +198,34 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="showEditDetailConfirmation()">Save changes</button>
+                        <button type="button" class="btnClose" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btnSubmit" onclick="showEditDetailConfirmation()">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal filter -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel">Filter Jenis Proyek</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="GET" action="{{ route('projectsNego.view', ['status' => $status]) }}">
+                    <div class="mb-3">
+                        <label class="form-label">Pilih Jenis Proyek:</label>
+                        <select class="form-select" name="jenis_projek" onchange="this.form.submit()" style="background-color:#e0ddd7">
+                            <option value="">All Types</option>
+                            <option value="Architecture" {{ request('jenis_projek') == 'Architecture' ? 'selected' : '' }}>Architecture</option>
+                            <option value="Commercial_building" {{ request('jenis_projek') == 'Commercial_building' ? 'selected' : '' }}>Commercial Building</option>
+                            <option value="Interior" {{ request('jenis_projek') == 'Interior' ? 'selected' : '' }}>Interior</option>
+                            <option value="Landscape" {{ request('jenis_projek') == 'Landscape' ? 'selected' : '' }}>Landscape</option>
+                            <option value="Renovation" {{ request('jenis_projek') == 'Renovation' ? 'selected' : '' }}>Renovation</option>
+                        </select>
                     </div>
                 </form>
             </div>

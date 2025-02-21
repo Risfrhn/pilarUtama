@@ -188,16 +188,16 @@
                 </div>
                 <div class="modal-body">
                     <!-- Nav pills -->
-                    <ul class="nav nav-pills" id="modalTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" id="tab1-tab" data-bs-toggle="pill" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Flyer</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="tab2-tab" data-bs-toggle="pill" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">About Us</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="tab3-tab" data-bs-toggle="pill" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Layanan</a>
-                    </li>
+                    <ul class="nav nav-tabs" id="modalTabs" role="tablist">
+                        <li class="nav-item " role="presentation">
+                            <a class="nav-link active"  id="tab1-tab" data-bs-toggle="pill" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Flyer</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="tab2-tab" data-bs-toggle="pill" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">About Us</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="tab3-tab" data-bs-toggle="pill" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Layanan</a>
+                        </li>
                     </ul>
 
                     <!-- Tab content -->
@@ -271,11 +271,11 @@
                                 <h5>Landscape</h5>
                                 <div class="mb-3">
                                     <label for="landscapeDesk" class="form-label">Deskripsi Landscape</label>
-                                    <textarea id="landscapeDesk" name="landscape_desk" class="form-control" rows="3">{{ $item->landscape_desk}}</textarea>
+                                    <textarea id="landscapeDesk" name="landscape_desk" class="form-control bg-transparent border-2" rows="3">{{ $item->landscape_desk}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="landscapeImage" class="form-label">Upload Gambar Landscape</label>
-                                    <input type="file" id="landscapeImage" name="landscapeImage" class="form-control" accept="image/*">
+                                    <input type="file" id="landscapeImage" name="landscapeImage" class="form-control bg-transparent border-2" accept="image/*">
                                 </div>
                                 <div class="mb-3">
                                     <img id="landscapePreviewImage" src="{{ asset($item->landscape_image) }}" alt="Image Preview" class="img-fluid">
@@ -287,11 +287,11 @@
                                 <h5>Renovasi</h5>
                                 <div class="mb-3">
                                     <label for="renovationDesk" class="form-label">Deskripsi Renovasi</label>
-                                    <textarea id="renovationDesk" name="renovation_desk" class="form-control" rows="3">{{ $item->renovation_desk}}</textarea>
+                                    <textarea id="renovationDesk" name="renovation_desk" class="form-control bg-transparent border-2" rows="3">{{ $item->renovation_desk}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="renovationImage" class="form-label">Upload Gambar Renovasi</label>
-                                    <input type="file" id="renovationImage" name="renovationImage" class="form-control" accept="image/*">
+                                    <input type="file" id="renovationImage" name="renovationImage" class="form-control bg-transparent border-2" accept="image/*">
                                 </div>
                                 <div class="mb-3">
                                     <img id="renovationPreviewImage" src="{{ asset($item->renovation_image) }}" alt="Image Preview" class="img-fluid">
@@ -303,11 +303,11 @@
                                 <h5>Commercial Build</h5>
                                 <div class="mb-3">
                                     <label for="comercialBuildDesk" class="form-label">Deskripsi Commercial Build</label>
-                                    <textarea id="comercialBuildDesk" name="comercial_build_desk" class="form-control" rows="3">{{ $item->comercial_build_desk}}</textarea>
+                                    <textarea id="comercialBuildDesk" name="comercial_build_desk" class="form-control bg-transparent border-2" rows="3">{{ $item->comercial_build_desk}}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="comercialBuildImage" class="form-label">Upload Gambar Commercial Build</label>
-                                    <input type="file" id="comercialBuildImage" name="comercialBuildImage" class="form-control" accept="image/*">
+                                    <input type="file" id="comercialBuildImage" name="comercialBuildImage" class="form-control bg-transparent border-2" accept="image/*">
                                 </div>
                                 <div class="mb-3">
                                     <img id="comercialBuildPreviewImage" src="{{ asset($item->comercial_build_image) }}" alt="Image Preview" class="img-fluid">
@@ -317,8 +317,8 @@
                     </div>   
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="showEditDetailConfirmation()">Save changes</button>
+                    <button type="button" class="btnClose" style="border-color: #65031D; color:#65031D" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btnSubmit" onclick="showEditDetailConfirmation()" style="background-color: #65031D">Save changes</button>
                 </div>
             </form>
         </div>
@@ -379,8 +379,8 @@
                         <input type="file" class="form-control" id="gambarflyer" name="gambarflyer">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btnClose" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btnSubmit">Tambah</button>
                     </div>
                 </form>
             </div>
