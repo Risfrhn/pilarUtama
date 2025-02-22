@@ -21,10 +21,15 @@
                         @foreach ($projectBefores as $index => $projectBefore)
                             <div class="carousel-item active h-100 {{ $index == 0 ? 'active' : '' }}">
                                 <img src="{{ asset($projectBefore->image ?: 'images/no-image.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
-                                <form class="position-absolute top-0 start-0 p-2" action="{{ route('projects.deleteImage', ['project_id' => $detailProject->id, 'image_id' => $projectBefore->id, 'type' => 'before']) }}" method="POST">
+                                <form id="delete-gambar-form-{{ $projectBefore->id }}" 
+                                    class="position-absolute top-0 start-0 p-2"
+                                    action="{{ route('projects.deleteImage', ['project_id' => $detailProject->id, 'image_id' => $projectBefore->id, 'type' => 'before']) }}" 
+                                    method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                    <button type="button" class="btn btn-danger" onclick="showDeleteGambarConfirmation({{ $projectBefore->id }})">
+                                        Hapus
+                                    </button>
                                 </form>
                             </div>
                         @endforeach
@@ -56,10 +61,10 @@
                         </video>
                         
                         <!-- Tombol hapus -->
-                        <form action="{{ route('projects.deleteVideo', ['project_id' => $detailProject->id, 'video_id' => $projectVideo->id]) }}" method="POST" class="position-absolute top-0 end-0 p-2" style="z-index: 1;">
+                        <form id="delete-video-form" action="{{ route('projects.deleteVideo', ['project_id' => $detailProject->id, 'video_id' => $projectVideo->id]) }}" method="POST" class="position-absolute top-0 end-0 p-2" style="z-index: 1;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Hapus</button>
+                            <button type="button" class="btn btn-danger" onclick="showDeleteVideoConfirmation()">Hapus</button>
                         </form>
                     </div>
                 @endforeach
@@ -82,13 +87,18 @@
             <div class="flex-grow-1 d-flex align-items-stretch">
                 <div id="carouselExample2" class="carousel slide w-100" data-bs-ride="carousel">
                     <div class="carousel-inner h-100 rounded-2" style="color:#65031D; border: 2px solid #65031D;">
-                        @foreach ($projectAfters as $index => $projectAfters)
+                        @foreach ($projectAfters as $index => $projectAfter)
                             <div class="carousel-item active h-100 {{ $index == 0 ? 'active' : '' }}">
-                                <img src="{{ asset($projectAfters->image ?: 'images/no-image.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
-                                <form class="position-absolute top-0 start-0 p-2" action="{{ route('projects.deleteImage', ['project_id' => $detailProject->id, 'image_id' => $projectAfters->id, 'type' => 'after']) }}" method="POST">
+                                <img src="{{ asset($projectAfter->image ?: 'images/no-image.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
+                                <form id="delete-gambar-form-{{ $projectAfter->id }}" 
+                                    class="position-absolute top-0 start-0 p-2"
+                                    action="{{ route('projects.deleteImage', ['project_id' => $detailProject->id, 'image_id' => $projectAfter->id, 'type' => 'after']) }}" 
+                                    method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                    <button type="button" class="btn btn-danger" onclick="showDeleteGambarConfirmation({{ $projectAfter->id }})">
+                                        Hapus
+                                    </button>
                                 </form>
                             </div>
                         @endforeach
@@ -251,16 +261,74 @@
     </div>
 </div>
 
+<div class="modal fade" id="confirmDeleteGambarModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content" style="background-color: #EEEBE5;">
+            <div class="modal-body text-center py-4">
+                <h5 class="mb-3">Konfirmasi Hapus</h5>
+                <p>Apakah anda yakin ingin menghapus gambar ini?</p>
+                <div class="d-flex justify-content-center gap-2 mt-4">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn" style="background-color: #65031D; color: #EEEBE5;" onclick="proceedToDeleteGambar()">Ya, Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- MODAL NOTIF -->
+<div class="modal fade" id="confirmDeleteVideoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content" style="background-color: #EEEBE5;">
+            <div class="modal-body text-center py-4">
+                <h5 class="mb-3">Konfirmasi Hapus</h5>
+                <p>Apakah anda yakin ingin menghapus video ini?</p>
+                <div class="d-flex justify-content-center gap-2 mt-4">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn" style="background-color: #65031D; color: #EEEBE5;" onclick="proceedToDeleteVideo()">Ya, Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- MODAL NOTIF PROJEK-->
 <script>
-
     function showDeleteConfirmation() {
         const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
         modal.show();
     }
     function proceedToDelete() {
         document.getElementById('delete-form').submit();
+    }
+</script>
+
+<!-- MODAL NOTIF GAMBAR PROJEK-->
+<script>
+    let deleteGambarId = null; // Simpan ID gambar yang akan dihapus
+
+    function showDeleteGambarConfirmation(imageId) {
+        deleteGambarId = imageId; // Simpan ID gambar yang dipilih
+        const modal = new bootstrap.Modal(document.getElementById('confirmDeleteGambarModal'));
+        modal.show();
+    }
+
+    function proceedToDeleteGambar() {
+        if (deleteGambarId) {
+            document.getElementById(`delete-gambar-form-${deleteGambarId}`).submit();
+        }
+    }
+</script>
+
+<!-- MODAL NOTIF VIDEO PROJEK -->
+<script>
+    function showDeleteVideoConfirmation() {
+        const modal = new bootstrap.Modal(document.getElementById('confirmDeleteVideoModal'));
+        modal.show();
+    }
+    function proceedToDeleteVideo() {
+        document.getElementById('delete-video-form').submit();
     }
 </script>
 
