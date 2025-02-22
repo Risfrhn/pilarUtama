@@ -63,7 +63,8 @@
                                 <div id="collapse{{ $project->id }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                     <div class="accordion-body text-dark">
                                         <p>{{ $project->description1 }}</p>
-                                        <button class="btn" style="background-color:#65031D;color:#EEEBE5"
+                                        
+                                        <button class="btn btn-edit" style="background-color:#65031D;color:#EEEBE5"
                                             data-id="{{ $project->id }}"
                                             data-name="{{ $project->name }}"
                                             data-description1="{{ $project->description1 }}"
@@ -73,13 +74,18 @@
                                             data-bs-target="#updateProjekModal">
                                             <i class="bi bi-pencil-fill"></i>
                                         </button>
-                                        <form id="delete-form" action="{{ route('projectNego.destroy', ['status' => $status, 'id' => $project->id]) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn" style="background-color:#65031D;color:#EEEBE5" onclick="showDeleteConfirmation()">
-                                                <i class="bi bi-trash-fill"></i>
-                                            </button>
-                                        </form>
+                                            <form id="delete-form-{{ $project->id }}" 
+                                                action="{{ route('projectNego.destroy', ['status' => $status, 'id' => $project->id]) }}" 
+                                                method="POST" 
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-delete"
+                                                        style="background-color:#65031D;color:#EEEBE5"
+                                                        onclick="showDeleteConfirmation({{ $project->id }})">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </button>
+                                            </form>
                                     </div>
                                 </div>
                             </div>
@@ -92,6 +98,66 @@
                 <p class="text-muted">No projects found with {{ $statusNames[$status] ?? 'Unknown Status' }}</p>
             </div>
         @endif
+    </div>
+</div>
+
+<!-- Modal update projek -->
+<div class="modal fade" id="updateProjekModal" tabindex="-1" aria-labelledby="updateProjekLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateProjekLabel">Edit Projek</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="projekTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="informasi-tab" data-bs-toggle="tab" data-bs-target="#informasi" type="button" role="tab" aria-controls="informasi" aria-selected="true">Informasi</button>
+                    </li>
+                </ul>
+                <form action="{{ route('projectNego.update', ['status' => request('status'), 'id' => '_placeholder_']) }}" method="POST" enctype="multipart/form-data" id="updateForm">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="editProjekId" name="id">
+                    <div class="tab-content mt-3" id="projekTabContent">
+                        <!-- Tab Informasi -->
+                        <div class="tab-pane fade show active" id="informasi" role="tabpanel" aria-labelledby="informasi-tab">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nama</label>
+                                <input type="text" class="form-control" id="name" name="name" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="description1" class="form-label">Deskripsi 1</label>
+                                <textarea class="form-control" id="description1" name="description1"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="jenis_projek" class="form-label">Jenis Proyek</label>
+                                <select class="form-select" id="jenis_projek" name="jenis_projek" >
+                                    <option value="Architecture" >Architecture</option>
+                                    <option value="Commercial_building">Commercial Building</option>
+                                    <option value="Interior" >Interior</option>
+                                    <option value="Landscape" >Landscape</option>
+                                    <option value="Renovation">Renovation</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="ongoing" >On going</option>
+                                    <option value="beingDesign">Being Design</option>
+                                    <option value="finished" >Finished</option>
+                                    <option value="negotiation">Negotiation</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btnClose" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btnSubmit" onclick="showEditDetailConfirmation()">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -147,65 +213,7 @@
         </div>
     </div>
 </div>
-<!-- Modal update projek -->
-<div class="modal fade" id="updateProjekModal" tabindex="-1" aria-labelledby="updateProjekLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateProjekLabel">Edit Projek</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <ul class="nav nav-tabs" id="projekTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="informasi-tab" data-bs-toggle="tab" data-bs-target="#informasi" type="button" role="tab" aria-controls="informasi" aria-selected="true">Informasi</button>
-                    </li>
-                </ul>
-                <form action="{{ route('projectNego.update', ['status' => request('status'), 'id' => '_placeholder_']) }}" method="POST" enctype="multipart/form-data" id="updateForm">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" id="editProjekId" name="id">
-                    <div class="tab-content mt-3" id="projekTabContent">
-                        <!-- Tab Informasi -->
-                        <div class="tab-pane fade show active" id="informasi" role="tabpanel" aria-labelledby="informasi-tab">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Nama</label>
-                                <input type="text" class="form-control" id="name" name="name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="description1" class="form-label">Deskripsi 1</label>
-                                <textarea class="form-control" id="description1" name="description1"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="jenis_projek" class="form-label">Jenis Proyek</label>
-                                <select class="form-select" id="jenis_projek" name="jenis_projek">
-                                    <option value="Architecture">Architecture</option>
-                                    <option value="Commercial_building">Commercial Building</option>
-                                    <option value="Interior">Interior</option>
-                                    <option value="Landscape">Landscape</option>
-                                    <option value="Renovation">Renovation</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="status" class="form-label">Status</label>
-                                <select class="form-select" id="status" name="status">
-                                    <option value="ongoing">On going</option>
-                                    <option value="beingDesign">Being Design</option>
-                                    <option value="finished">Finished</option>
-                                    <option value="negotiation">Negotiation</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btnClose" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btnSubmit" onclick="showEditDetailConfirmation()">Save changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- Modal filter -->
 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -279,30 +287,47 @@
         let jenis_projek = $(this).data("jenis_projek");
         let status = $(this).data("status");
 
-        // Update form action URL by replacing the placeholder with actual ID
-        let formAction = $("#updateForm").attr("action").replace('_placeholder_', id);
-        $("#updateForm").attr("action", formAction);
+        console.log("ID:", id);
+        console.log("Name:", name);
+        console.log("Description:", description1);
+        console.log("Jenis Projek:", jenis_projek);
+        console.log("Status:", status);
+        
+        // Gunakan URL yang sudah ada dan ganti placeholder dengan ID yang sebenarnya
+        let currentAction = $("#updateForm").attr("action");
+        let newAction = currentAction.replace('_placeholder_', id);
+        $("#updateForm").attr("action", newAction);
+        
+        setTimeout(() => {
+        $("#editProjekId").val(id);
+        $("#name").val(name).trigger("change");
+        $("#description1").val(description1).trigger("change");
+        $("#jenis_projek").val(jenis_projek).trigger("change");
+        $("#status").val(status).trigger("change");
 
-        $("#updateProjekModal #editProjekId").val(id);
-        $("#updateProjekModal #name").val(name);
-        $("#updateProjekModal #description1").val(description1);
-        $("#updateProjekModal #jenis_projek").val(jenis_projek);
-        $("#updateProjekModal #status").val(status);
+        console.log("Data berhasil dimasukkan ke modal!");
+    }, 1); 
     });
 </script>
 
 
 <!-- MODAL NOTIF -->
 <script>
+    let deleteProjectId = null; // Simpan ID proyek yang ingin dihapus
 
-    function showDeleteConfirmation() {
+    function showDeleteConfirmation(projectId) {
+        deleteProjectId = projectId; // Simpan ID proyek yang diklik
         const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
         modal.show();
     }
+
     function proceedToDelete() {
-        document.getElementById('delete-form').submit();
+        if (deleteProjectId) {
+            document.getElementById('delete-form-' + deleteProjectId).submit();
+        }
     }
 </script>
+
 
 
 <script>

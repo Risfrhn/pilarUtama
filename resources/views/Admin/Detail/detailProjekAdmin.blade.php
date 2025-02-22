@@ -85,7 +85,7 @@
                         @foreach ($projectAfters as $index => $projectAfters)
                             <div class="carousel-item active h-100 {{ $index == 0 ? 'active' : '' }}">
                                 <img src="{{ asset($projectAfters->image ?: 'images/no-image.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
-                                <form class="position-absolute top-0 start-0 p-2" action="{{ route('projects.deleteImage', ['project_id' => $detailProject->id, 'image_id' => $projectBefore->id, 'type' => 'before']) }}" method="POST">
+                                <form class="position-absolute top-0 start-0 p-2" action="{{ route('projects.deleteImage', ['project_id' => $detailProject->id, 'image_id' => $projectAfters->id, 'type' => 'after']) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Hapus</button>
@@ -285,6 +285,31 @@
         const form = document.querySelector('#updateProjekModal form');
         form.submit();
     }    
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const statusSelect = document.getElementById("status");
+        const fotoBefore = document.getElementById("foto_before").closest(".mb-3");
+        const fotoAfter = document.getElementById("foto_after").closest(".mb-3");
+        const video = document.getElementById("video").closest(".mb-3");
+
+        function toggleFields() {
+            if (statusSelect.value === "finished") {
+                fotoAfter.style.display = "block";
+                video.style.display = "block";
+                
+            } else {
+                fotoAfter.style.display = "none";
+                video.style.display = "none";
+                
+            }
+        }
+
+        statusSelect.addEventListener("change", toggleFields);
+        toggleFields(); // Panggil saat halaman dimuat untuk memastikan inputan disembunyikan jika perlu
+    });
 </script>
 
 

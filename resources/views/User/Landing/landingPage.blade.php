@@ -95,7 +95,7 @@
 </div>
 
 <!-- projek -->
-<div class="container mt-5 mb-5" id="projek">
+<div class="container mt-5 mb-5" id="projek">   
     <h1 style="color:#65031D;">Our Project</h1>
     <div class="w-100 border border-1 border-dark"></div>
 
@@ -157,4 +157,35 @@
     </h3>
     <h1 class="noHp">0851-8333-4971</h1>
 </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let activeTab = "desc-architectur";
+        document.querySelectorAll(".layanan").forEach(tab => {
+            tab.addEventListener("click", function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute("data-target");
+                const targetContent = document.getElementById(targetId);
+                const imageSrc = this.getAttribute("data-image");
+                
+                if (activeTab === targetId) return;
+                
+                document.querySelectorAll(".tab-pane").forEach(content => {
+                    content.classList.remove("show", "active");
+                });
+                document.querySelectorAll(".layanan").forEach(link => {
+                    link.classList.remove("active");
+                });
+                
+                targetContent.classList.add("show", "active");
+                this.classList.add("active");
+                document.getElementById("layananImage").src = imageSrc;
+                activeTab = targetId;
+            });
+        });
+    });
+</script>
+
+@include('footer')
 @endforeach

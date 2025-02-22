@@ -148,7 +148,7 @@ class AdminController extends Controller
     ###List projek Nego
     public function showProjectNego(Request $request, $status)
     {
-        $projects = Project::where('status', $status)->get();
+        $project = Project::where('status', $status)->get();
 
         $query = Project::query();
     
@@ -167,7 +167,7 @@ class AdminController extends Controller
     
         $projects = $query->paginate(8); 
 
-        return view('Admin.List.listProjekNegoAdmin', compact('projects','status'));
+        return view('Admin.List.listProjekNegoAdmin', compact('projects','project','status'));
     }
 
     public function deleteNegoProject($status, $id)
@@ -526,6 +526,8 @@ class AdminController extends Controller
                 'jenis_projek' => 'nullable|string|max:255',
                 'status' => 'nullable|string|max:50',
             ]);
+
+            
     
             // Cari proyek berdasarkan ID
             $project = Project::findOrFail($id);
