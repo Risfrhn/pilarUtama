@@ -1,7 +1,7 @@
 @include('header')
 
 <div class="container mb-5">
-    <h1 style="color:#65031D;">{{ $detailProject->name }}</h1>
+    <h1 style="color:#65031D;" data-aos="fade-right" data-aos-duration="800" data-aos-easing="ease-in-sine">{{ $detailProject->name }}</h1>
     <div class="w-100 border border-1 border-dark mb-3"></div>
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -15,7 +15,7 @@
         <div class="col-12 col-md-4 d-flex flex-column">
             <p style="font-size:15px; margin-bottom:2px">During the project</p>
             <div class="flex-grow-1 d-flex align-items-stretch">
-                <div id="carouselExample1" class="carousel slide w-100" data-bs-ride="carousel">
+                <div id="carouselExample1" class="carousel slide w-100" data-bs-ride="carousel" data-aos="zoom-in" data-aos-duration="800" data-aos-easing="ease-in-sine">
                     <div class="carousel-inner h-100 rounded-2" style="color:#65031D; border: 2px solid #65031D;">
                         @foreach ($projectBefores as $index => $projectBefore)
                             <div class="carousel-item active h-100 {{ $index == 0 ? 'active' : '' }}">
@@ -35,7 +35,7 @@
 
         <!-- Tengah (Teks) -->
         <div class="col-12 col-md-4 ">
-            <div class="mt-4">
+            <div class="mt-4" data-aos="fade-in" data-aos-duration="800" data-aos-easing="ease-in-sine">
                 <h1 style="font-size:20px;color:#65031D;">Client Problem</h1>
                 <p style="font-size:10px;text-align:justify">
                 {{ $detailProject->description1 }}
@@ -44,20 +44,20 @@
             <div class="d-flex justify-content-center mb-2 position-relative">
                 @foreach ($projectVideo as $index => $projectVideo)
                     <div class="position-relative">
-                        <video autoplay loop muted playsinline class="video-fluid rounded-2" style="width: 100%; max-width: 400px; height: auto; color:#65031D; border: 2px solid #65031D;" alt="Empty video">
+                        <video autoplay loop muted playsinline class="video-fluid rounded-2" style="width: 100%; max-width: 400px; height: auto; color:#65031D; border: 2px solid #65031D;" alt="Empty video" data-aos="zoom-in" data-aos-duration="800" data-aos-easing="ease-in-sine">
                             <source src="{{ asset($projectVideo->video) }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     </div>
                 @endforeach
             </div>
-            <div>
+            <div data-aos="fade-in" data-aos-duration="800" data-aos-easing="ease-in-sine">
                 <h1 style="font-size:20px;color:#65031D;">Problem Client</h1>
                 <p style="font-size:10px;text-align:justify">
                 {{ $detailProject->description2 }}
                 </p>
             </div>
-            <div>
+            <div data-aos="fade-in" data-aos-duration="800" data-aos-easing="ease-in-sine">
                 <h1 style="font-size:14px;color:#65031D;">[ Target Pengerjaan ] {{ $detailProject->target_pengerjaan_start }} - {{ $detailProject->target_pengerjaan_end }}</h1>
             </div>
         </div>
@@ -67,7 +67,7 @@
         <div class="col-12 col-md-4 d-flex flex-column">
             <p style="font-size:15px; margin-bottom:2px">Result</p>
             <div class="flex-grow-1 d-flex align-items-stretch">
-                <div id="carouselExample2" class="carousel slide w-100" data-bs-ride="carousel">
+                <div id="carouselExample2" class="carousel slide w-100" data-bs-ride="carousel" data-aos="zoom-in" data-aos-duration="800" data-aos-easing="ease-in-sine">
                     <div class="carousel-inner h-100 rounded-2" style="color:#65031D; border: 2px solid #65031D;">
                         @foreach ($projectAfters as $index => $projectAfters)
                             <div class="carousel-item active h-100 {{ $index == 0 ? 'active' : '' }}">

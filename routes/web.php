@@ -49,6 +49,11 @@ Route::get('/projects/status/{status}/{id}', [AdminController::class, 'showProje
 Route::put('/projects/status/{status}/{id}/update',[AdminController::class, 'updateProject'])->middleware('auth')->name('projects.update');
 Route::delete('/projects/{project_id}/image/{image_id}/{type}', [AdminController::class, 'deleteImage'])->middleware('auth')->name('projects.deleteImage');
 Route::delete('/projects/{project_id}/video/{video_id}', [AdminController::class, 'deleteVideo'])->middleware('auth')->name('projects.deleteVideo');
+## backup database dan file
+Route::get('/dashboardAdmin/backup/all', [AdminController::class, 'downloadBackup'])->name('admin.backup.all');
+// Route::get('/dashboardAdmin/backup/database', [AdminController::class, 'backupDatabase'])->name('backup.database');
+// Route::get('/dashboardAdmin/backup/public', [AdminController::class, 'backupPublicFiles'])->name('backup.public');
+
 
 
 

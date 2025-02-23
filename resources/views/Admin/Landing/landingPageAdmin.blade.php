@@ -172,6 +172,16 @@
         <i class="bi bi-door-open-fill"></i>
     </button>
 </form>
+<button type="button" class="btn btn-lg end-0 m-5"
+    style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:150px;"
+    data-bs-toggle="modal" data-bs-target="#confirmBackupModal">
+    <i class="bi bi-cloud-arrow-down-fill"></i> 
+</button>
+{{--<a href="{{ route('backup.database') }}" class="btn btn-primary">Backup Database</a>
+<a href="{{ route('backup.public') }}" class="btn btn-secondary">Backup Public Files</a>--}}
+
+
+
 
 
 <!-- MODAL -->
@@ -389,6 +399,7 @@
 </div>
 
 
+
 <!-- NOTIF -->
 <!-- Modal Konfirmasi Logout -->
 <div class="modal fade" id="confirmLogoutModal" tabindex="-1" aria-hidden="true">
@@ -421,6 +432,24 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Konfirmasi backup -->
+<div class="modal fade" id="confirmBackupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content" style="background-color: #EEEBE5;">
+            <div class="modal-body text-center py-4">
+                <h5 class="mb-3">Konfirmasi backup data</h5>
+                <p>Apakah anda yakin ingin membackup data?</p>
+                <div class="d-flex justify-content-center gap-2 mt-4">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn" style="background-color: #65031D; color: #EEEBE5;" onclick="proceedToBackup()">Ya, backup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 <!-- LAYANAN GANTI GAMBAR -->
@@ -490,6 +519,17 @@
 
     function proceedToLogout() {
         document.getElementById('logout-form').submit();
+    }
+</script>
+<script>
+
+    function showBackupConfirmation() {
+        const modal = new bootstrap.Modal(document.getElementById('confirmBackupModal'));
+        modal.show();
+    }
+
+    function proceedToBackup() {
+        window.location.href = "{{ route('admin.backup.all') }}";
     }
 </script>
 <script>

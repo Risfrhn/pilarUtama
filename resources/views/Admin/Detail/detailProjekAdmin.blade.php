@@ -210,7 +210,7 @@
                                 <label for="foto_after" class="form-label">Foto After</label>
                                 <input type="file" class="form-control" id="foto_after" name="foto_after[]" multiple>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3" id="videoInputContainer">
                                 <label for="video" class="form-label">Upload Video</label>
                                 <input type="file" class="form-control" id="video" name="video[]">
                             </div>
@@ -366,12 +366,9 @@
         function toggleFields() {
             if (statusSelect.value === "finished") {
                 fotoAfter.style.display = "block";
-                video.style.display = "block";
                 
             } else {
-                fotoAfter.style.display = "none";
-                video.style.display = "none";
-                
+                fotoAfter.style.display = "none"; 
             }
         }
 
@@ -379,6 +376,9 @@
         toggleFields(); // Panggil saat halaman dimuat untuk memastikan inputan disembunyikan jika perlu
     });
 </script>
+
+
+
 
 
 

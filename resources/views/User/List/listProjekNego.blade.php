@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-lg-8 col-12 text-center text-md-start">
-            <h1 style="color:#65031D;">
+            <h1 style="color:#65031D;" data-aos="fade-right" data-aos-duration="800" data-aos-easing="ease-in-sine">
                 @php
                     $statusNames = [
                         'finished' => 'Finished Projects',
@@ -17,7 +17,7 @@
             </h1>
         </div>
         <div class="col-12 col-md-6 col-lg-4 px-0">
-            <div class="row g-1 mx-0 w-100 d-flex align-items-center"> 
+            <div class="row g-1 mx-0 w-100 d-flex align-items-center" data-aos="fade-in" data-aos-duration="800" data-aos-easing="ease-in-sine"> 
                 <form action="{{ route('projectsNegoUser.view', ['status' => $status]) }}" method="GET" class="row g-1 mx-0 w-100">
                     <div class="col-8 col-md-8 col-lg-8"> 
                         <input class="form-control" type="text" name="search" placeholder="Search project name..." 
@@ -37,17 +37,17 @@
                 </form>
             </div>
         </div>
-        <ol class="breadcrumb ps-0 ps-md-3">
+        <ol class="breadcrumb ps-0 ps-md-3" data-aos="fade-in" data-aos-duration="800" data-aos-easing="ease-in-sine">
             <li class="breadcrumb-item" style="font-size:10px;"><a href="{{route('dashboardUser.view')}}">Home</a></li>
             <li class="breadcrumb-item active" style="font-size:10px;"aria-current="page">List Projek</li>
         </ol>
         @if ($projects->isNotEmpty() && $projects->where('status', $status)->isNotEmpty())
             <div class="row">
                 @foreach ($projects->where('status', $status) as $project)
-                    <div class="col-1 d-flex align-items-center justify-content-center">
+                    <div class="col-1 d-flex align-items-center justify-content-center" data-aos="zoom-in" data-aos-duration="800" data-aos-easing="ease-in-sine">
                         <p style="font-size:20px;">[{{ $loop->iteration }}]</p>
                     </div>
-                    <div class="col-11">
+                    <div class="col-11" data-aos="fade-in" data-aos-duration="800" data-aos-easing="ease-in-sine">
                         <div class="accordion mb-4" id="accordionExample">
                             <div class="accordion-item bg-transparent rounded-0" style="color:#65031D; border-bottom: 2px solid #65031D;">
                                 <h2 class="accordion-header d-flex justify-content-between align-items-center">

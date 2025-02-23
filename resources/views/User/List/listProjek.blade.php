@@ -3,7 +3,7 @@
 <div class="container mt-1">
     <div class="row">
         <div class="col-md-6 col-lg-8 text-center text-md-start">
-            <h1 style="color:#65031D;">
+            <h1 style="color:#65031D;" data-aos="fade-right" data-aos-duration="800" data-aos-easing="ease-in-sine">
                 @php
                     $statusNames = [
                         'finished' => 'Finished Projects',
@@ -17,7 +17,7 @@
             </h1>
         </div>
         <div class="col-12 col-md-6 col-lg-4 px-0">
-            <div class="row g-1 mx-0 w-100 d-flex align-items-center"> 
+            <div class="row g-1 mx-0 w-100 d-flex align-items-center" data-aos="fade-in" data-aos-duration="800" data-aos-easing="ease-in-sine"> 
                 <form action="{{ route('projectsUser.view', ['status' => $status]) }}" method="GET" class="row g-1 mx-0 w-100">
                     <div class="col-8 col-md-8 col-lg-8"> 
                         <input class="form-control" type="text" name="search" placeholder="Search project name..." 
@@ -38,14 +38,14 @@
             </div>
         </div>
     </div>
-    <ol class="breadcrumb">
+    <ol class="breadcrumb" data-aos="fade-in" data-aos-duration="800" data-aos-easing="ease-in-sine">
         <li class="breadcrumb-item" style="font-size:10px;"><a href="{{route('dashboardUser.view')}}">Home</a></li>
         <li class="breadcrumb-item active" style="font-size:10px;"aria-current="page">List Projek</li>
     </ol>
-    <div class="row mt-3">
+    <div class="row mt-3" >
     @if ($projects->isNotEmpty() && $projects->where('status', $status)->isNotEmpty())
         @foreach($projects as $project)
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 g-2 d-flex justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3 g-2 d-flex justify-content-center" data-aos="zoom-in" data-aos-duration="800" data-aos-easing="ease-in-sine">
                 <!-- Membungkus card dengan tag <a> untuk menjadikannya link -->
                 <a href="{{ route('projectsDetailUser.view', ['status' => $project->status, 'id' => $project->id]) }}" class="card-link" style="text-decoration: none;">
                     <div class="card overflow-hidden rounded-4 my-1" style="cursor: pointer;">

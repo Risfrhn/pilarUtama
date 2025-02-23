@@ -10,6 +10,13 @@ use App\Models\projectAfter as ProjectAfter;
 use App\Models\projectVideo as ProjectVideo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use ZipArchive;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 
 class AdminController extends Controller
@@ -173,7 +180,34 @@ class AdminController extends Controller
     public function deleteNegoProject($status, $id)
     {
         try {
+            // Cari proyek berdasarkan ID
             $project = Project::findOrFail($id);
+            $status = $project->status;  // Ambil status proyek yang dihapus
+
+            // Tentukan folder terkait proyek
+            $projectFolder = public_path('images/projects/' . Str::slug($project->name));
+            $videoFolder = public_path('videos/projects/' . Str::slug($project->name));
+
+            // Hapus folder gambar sebelum dan sesudah proyek
+            if (is_dir($projectFolder . '/before')) {
+                $this->deleteFolder($projectFolder . '/before');
+            }
+
+            if (is_dir($projectFolder . '/after')) {
+                $this->deleteFolder($projectFolder . '/after');
+            }
+
+            // Hapus folder video proyek jika ada
+            if (is_dir($projectFolder)) {
+                $this->deleteFolder($projectFolder);
+            }
+
+            // Hapus folder video proyek jika ada
+            if (is_dir($videoFolder)) {
+                $this->deleteFolder($videoFolder);
+            }
+
+            // Hapus proyek dari database
             $project->delete();
             
             return redirect()
@@ -366,22 +400,35 @@ class AdminController extends Controller
                 }
             }
     
-            // Menyimpan atau mengupdate video
+            
+            // Menyimpan atau mengupdate video (hanya 1 video per proyek)
             if ($request->hasFile('video')) {
-                foreach ($request->file('video') as $file) {
-                    $folderPath = public_path('videos/projects/' . Str::slug($project->name));
-                    if (!file_exists($folderPath)) {
-                        mkdir($folderPath, 0777, true);
-                    }
-                    $fileName = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $file->getClientOriginalName());
-                    $file->move($folderPath, $fileName);
-    
-                    // Simpan ke tabel project_videos
-                    $projectVideo = new ProjectVideo();
-                    $projectVideo->project_id = $project->id;
-                    $projectVideo->video = 'videos/projects/' . Str::slug($project->name) . '/' . $fileName;
-                    $projectVideo->save();
+                // Cek apakah proyek sudah memiliki video
+                $existingVideo = ProjectVideo::where('project_id', $project->id)->first();
+                
+                if ($existingVideo) {
+                    return redirect()->route('projectsDetail.view', [
+                        'status' => $project->status,
+                        'id' => $project->id
+                    ])->with('error', 'Proyek ini sudah memiliki video! Hanya satu video yang diperbolehkan.');
                 }
+
+                // Jika belum ada video, simpan yang baru
+                $file = $request->file('video')[0]; // Ambil file pertama saja (karena hanya 1 video diperbolehkan)
+                $folderPath = public_path('videos/projects/' . Str::slug($project->name));
+
+                if (!file_exists($folderPath)) {
+                    mkdir($folderPath, 0777, true);
+                }
+
+                $fileName = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $file->getClientOriginalName());
+                $file->move($folderPath, $fileName);
+
+                // Simpan ke tabel project_videos
+                $projectVideo = new ProjectVideo();
+                $projectVideo->project_id = $project->id;
+                $projectVideo->video = 'videos/projects/' . Str::slug($project->name) . '/' . $fileName;
+                $projectVideo->save();
             }
     
             if ($project->status === 'negotiation') {
@@ -605,5 +652,72 @@ class AdminController extends Controller
         // Setelah semua file dihapus, hapus folder itu sendiri
         rmdir($folderPath);
     }
+
+
+    public function downloadBackup()
+    {
+        $storagePath = storage_path('app/public/');
+        $backupZipFile = $storagePath . 'full_backup.zip';
+        $databaseBackupFile = $storagePath . 'database_backup.sql';
+        $publicFolder = public_path();
+
+        // **Hapus file ZIP sebelumnya untuk menghindari error permission**
+        if (file_exists($backupZipFile)) {
+            unlink($backupZipFile);
+        }
+
+        // **Backup Database**
+        $command = [
+            'C:\xampp\mysql\bin\mysqldump.exe',
+            '-u', 'root',
+            'pilarutama'
+        ];
+
+        $process = new Process($command);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        file_put_contents($databaseBackupFile, $process->getOutput());
+
+        // **Buat ZIP dan Tambahkan Database Backup**
+        $zip = new ZipArchive();
+
+        if ($zip->open($backupZipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE) {
+            return response()->json(['error' => 'Gagal membuat file ZIP'], 500);
+        }
+
+        // **Tambahkan Database Backup ke ZIP**
+        $zip->addFile($databaseBackupFile, 'database_backup.sql');
+
+        // **Tambahkan Semua File di Folder Public ke ZIP**
+        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($publicFolder, RecursiveDirectoryIterator::SKIP_DOTS));
+
+        foreach ($files as $file) {
+            if ($file->isFile()) {
+                $filePath = $file->getRealPath();
+                $relativePath = substr($filePath, strlen($publicFolder) + 1);
+                $zip->addFile($filePath, "public/" . $relativePath);
+            }
+        }
+
+        $zip->close();
+
+        // **Pastikan file ZIP benar-benar ada sebelum di-download**
+        if (!file_exists($backupZipFile)) {
+            return response()->json(['error' => 'File ZIP tidak ditemukan'], 500);
+        }
+
+        return response()->download($backupZipFile, 'full_backup.zip', [
+            'Content-Type' => 'application/zip',
+            'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+            'Pragma' => 'no-cache',
+            'Expires' => '0'
+        ])->deleteFileAfterSend(true);
+    }
+
+    
 
 }
