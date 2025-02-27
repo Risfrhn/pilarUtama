@@ -1,9 +1,16 @@
 @include('header')
 @include('Component.alert')
 
+
+<div style="position: relative; display: inline-block; width: 100%;">
+    <img src="{{ asset($detailProject->gambarHero) }}" class="img-fluid mb-5" alt="Deskripsi Gambar" data-aos="fade-up" data-aos-duration="800" data-aos-easing="ease-in-out" style="filter: brightness(50%); width: 100%; display: block;">
+    <div class="position-absolute top-50 start-50 translate-middle text-white text-center" data-aos="fade-up" data-aos-duration="800" data-aos-easing="ease-in-out">
+        <h1 style="">{{ $detailProject->name }}</h1>
+        <p class="detailProjekHeader fw-light">Kami adalah solusi terbaik untuk menciptakan segala keinginan & kebutuhan konstruksi anda.</p>
+        <button type="button" class="btn detailProjekHeader btn-outline border-2 rounded-5" style="color:#EEEBE5;border-color:#EEEBE5">Lihat Projek</button>
+    </div>
+</div>
 <div class="container mb-5">
-    <h1 style="color:#65031D;">{{ $detailProject->name }}</h1>
-    <div class="w-100 border border-1 border-dark mb-3"></div>
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item" style="font-size:10px;"><a href="{{route('dashboardAdmin.view')}}">Home</a></li>
@@ -11,51 +18,92 @@
             <li class="breadcrumb-item active" style="font-size:10px;"aria-current="page">Detail project</li>
         </ol>
     </nav>
-    <div class="row mt-3 align-items-stretch">
-        <!-- Carousel Kiri -->
-        <div class="col-12 col-md-4 d-flex flex-column">
-            <p style="font-size:15px; margin-bottom:2px">During the project</p>
-            <div class="flex-grow-1 d-flex align-items-stretch">
-                <div id="carouselExample1" class="carousel slide w-100" data-bs-ride="carousel">
-                    <div class="carousel-inner h-100 rounded-2" style="color:#65031D; border: 2px solid #65031D;">
-                        @foreach ($projectBefores as $index => $projectBefore)
-                            <div class="carousel-item active h-100 {{ $index == 0 ? 'active' : '' }}">
-                                <img src="{{ asset($projectBefore->image ?: 'images/no-image.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
-                                <form id="delete-gambar-form-{{ $projectBefore->id }}" 
-                                    class="position-absolute top-0 start-0 p-2"
-                                    action="{{ route('projects.deleteImage', ['project_id' => $detailProject->id, 'image_id' => $projectBefore->id, 'type' => 'before']) }}" 
-                                    method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn btn-danger" onclick="showDeleteGambarConfirmation({{ $projectBefore->id }})">
-                                        Hapus
-                                    </button>
-                                </form>
-                            </div>
-                        @endforeach
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <h1 style="color:#65031D;">Dokumentasi selama <br> projek berjalan</h1>
+            <div class="w-100 border border-1 border-dark mb-3"></div>
+        </div>
+        <!-- Swiper Container -->
+        <div class="swiper mySwiper px-3">
+            <div class="swiper-wrapper">
+            @foreach ($projectBefores as $index => $projectBefore)
+                <div class="swiper-slide">
+                    <div class="position-relative">
+                        <img src="{{ asset($projectBefore->image ?: 'images/no-image.jpg') }}" 
+                            class="d-block w-100" 
+                            style="min-height: 400px; height: 100%; object-fit: cover;" 
+                            alt="Before Image">
+                        
+                        <!-- Tombol Hapus -->
+                        <form id="delete-gambar-form-{{ $projectBefore->id }}" 
+                            class="position-absolute top-0 start-0 p-2"
+                            action="{{ route('projects.deleteImage', ['project_id' => $detailProject->id, 'image_id' => $projectBefore->id, 'type' => 'before']) }}" 
+                            method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn btn-danger" onclick="showDeleteGambarConfirmation({{ $projectBefore->id }})">
+                                Hapus
+                            </button>
+                        </form>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample1" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample1" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
                 </div>
+            @endforeach
             </div>
         </div>
 
-        <!-- Tengah (Teks) -->
-        <div class="col-12 col-md-4 ">
-            <div class="mt-4">
-                <h1 style="font-size:20px;color:#65031D;">Client Problem</h1>
-                <p style="font-size:10px;text-align:justify">
-                {{ $detailProject->description1 }}
-                </p>
+        <div class="row mt-5" >
+            <div class="col-6 d-flex justify-content-start align-items-end">
+                <h1 class="detailProjectTarget" style="color:#65031D;">[ Target Pengerjaan ] {{ $detailProject->target_pengerjaan_start }} - {{ $detailProject->target_pengerjaan_end }}</h1>
+            </div> 
+            <div class="col-6 text-end">
+                <h1 class="detailProjectAbout" style="color:#65031D;">About Projek</h1>
+            </div> 
+            <div class="w-100 border border-1 border-dark mb-3"></div>
+        </div>
+        <div class="row mt-3 mb-5">
+            <div class="col-12">
+                <div class="accordion mb-4" id="accordionExample">
+                    <div class="accordion-item bg-transparent rounded-0" style="color:#65031D; border-bottom: 2px solid #65031D;">
+                        <h2 class="accordion-header d-flex justify-content-between align-items-center">
+                            <button class="accordion-button bg-transparent text-dark collapsed" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapse1"
+                                aria-expanded="false"
+                                aria-controls="collapse1">
+                                <p style="font-size:20px;margin-bottom:-10px;">Client Problem</p>
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body text-dark">
+                                <p>{{ $detailProject->description1 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion mb-4" id="accordionExample">
+                    <div class="accordion-item bg-transparent rounded-0" style="color:#65031D; border-bottom: 2px solid #65031D;">
+                        <h2 class="accordion-header d-flex justify-content-between align-items-center">
+                            <button class="accordion-button bg-transparent text-dark collapsed" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapse2"
+                                aria-expanded="false"
+                                aria-controls="collapse2">
+                                <p style="font-size:20px;margin-bottom:-10px;">Problem Client</p>
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body text-dark">
+                                <p>{{ $detailProject->description1 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="d-flex justify-content-center mb-2 position-relative">
+            <div class="col-12">
                 @foreach ($projectVideo as $index => $projectVideo)
                     <div class="position-relative">
-                        <video autoplay loop muted playsinline class="video-fluid rounded-2" style="width: 100%; max-width: 400px; height: auto; color:#65031D; border: 2px solid #65031D;" alt="Empty video">
+                        <video autoplay loop muted playsinline class="video-fluid rounded-2" style="width: 100%; color:#65031D; border: 2px solid #65031D;" alt="Empty video">
                             <source src="{{ asset($projectVideo->video) }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -69,61 +117,52 @@
                     </div>
                 @endforeach
             </div>
-            <div>
-                <h1 style="font-size:20px;color:#65031D;">Problem Client</h1>
-                <p style="font-size:10px;text-align:justify">
-                {{ $detailProject->description2 }}
-                </p>
-            </div>
-            <div>
-                <h1 style="font-size:14px;color:#65031D;">[ Target Pengerjaan ] {{ $detailProject->target_pengerjaan_start }} - {{ $detailProject->target_pengerjaan_end }}</h1>
-            </div>
         </div>
 
-        <!-- Carousel Kanan -->
+
         @if($detailProject->status === 'finished')
-        <div class="col-12 col-md-4 d-flex flex-column">
-            <p style="font-size:15px; margin-bottom:2px">Result</p>
-            <div class="flex-grow-1 d-flex align-items-stretch">
-                <div id="carouselExample2" class="carousel slide w-100" data-bs-ride="carousel">
-                    <div class="carousel-inner h-100 rounded-2" style="color:#65031D; border: 2px solid #65031D;">
-                        @foreach ($projectAfters as $index => $projectAfter)
-                            <div class="carousel-item active h-100 {{ $index == 0 ? 'active' : '' }}">
-                                <img src="{{ asset($projectAfter->image ?: 'images/no-image.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
-                                <form id="delete-gambar-form-{{ $projectAfter->id }}" 
-                                    class="position-absolute top-0 start-0 p-2"
-                                    action="{{ route('projects.deleteImage', ['project_id' => $detailProject->id, 'image_id' => $projectAfter->id, 'type' => 'after']) }}" 
-                                    method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn btn-danger" onclick="showDeleteGambarConfirmation({{ $projectAfter->id }})">
-                                        Hapus
-                                    </button>
-                                </form>
-                            </div>
-                        @endforeach
+            <div class="row mt-3 text-end" >
+                <div class="col-12">
+                    <h1 style="color:#65031D;">Dokumentasi <br> hasil pengerjaan</h1>
+                    <div class="w-100 border border-1 border-dark mb-3"></div>
+                </div>  
+            </div>
+            <!-- Swiper Container -->
+            <div class="swiper mySwiper px-3">
+                <div class="swiper-wrapper">
+                @foreach ($projectAfters as $index => $projectAfter)
+                    <div class="swiper-slide">
+                        <div class="position-relative">
+                            <img src="{{ asset($projectAfter->image ?: 'images/no-image.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
+                                
+                            
+                            <form id="delete-gambar-form-{{ $projectAfter->id }}" 
+                                class="position-absolute top-0 start-0 p-2"
+                                action="{{ route('projects.deleteImage', ['project_id' => $detailProject->id, 'image_id' => $projectAfter->id, 'type' => 'after']) }}" 
+                                method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-danger" onclick="showDeleteGambarConfirmation({{ $projectAfter->id }})">
+                                    Hapus
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
+                @endforeach
                 </div>
             </div>
-        </div>
         @endif
     </div>
 </div>
 
 <!-- BUTTON MENGAMBANG -->
-<button type="button" class="btn btn-lg end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:0px" data-bs-toggle="modal" data-bs-target="#updateProjekModal">
+<button type="button" class="btn btn-lg end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:0px;z-index: 9999;" data-bs-toggle="modal" data-bs-target="#updateProjekModal">
     <i class="bi bi-pencil"></i>
 </button>
 <form id="delete-form" action="{{ route('projects.delete', ['project_id' => $detailProject->id]) }}" method="POST" class="d-inline">
     @csrf
     @method('DELETE')
-    <button type="button" class="btn btn-lg end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:50px" onclick="showDeleteConfirmation()">
+    <button type="button" class="btn btn-lg end-0 m-5" style="background-color:#65031D;color:#EEEBE5;position:fixed;bottom:50px;z-index: 9999" onclick="showDeleteConfirmation()">
         <i class="bi bi-trash-fill"></i>
     </button>
 </form>
@@ -201,6 +240,12 @@
                             </div>
                             <div class="mb-3">
                                 <img id="gambarflyer" src="{{ asset($detailProject->gambarflyer)}}" alt="Image Preview" class="img-fluid">
+                            </div><div class="mb-3">
+                                <label for="gambarHero" class="form-label">Gambar Label</label>
+                                <input type="file" class="form-control" id="gambarHero" name="gambarHero">
+                            </div>
+                            <div class="mb-3">
+                                <img id="gambarHero" src="{{ asset($detailProject->gambarHero)}}" alt="Image Preview" class="img-fluid">
                             </div>
                             <div class="mb-3">
                                 <label for="foto_before" class="form-label">Foto Before</label>

@@ -46,7 +46,37 @@
         AOS.init();
     </script>
 
-    <!-- js masonry -->
-    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <!-- js swiper -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 1, // Default tampil 1 slide
+        spaceBetween: 10,
+        loop: true, // Mengaktifkan looping
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        breakpoints: {
+            640: {
+                slidesPerView: 1, // 1 slide untuk layar kecil
+                spaceBetween: 10
+            },
+            768: {
+                slidesPerView: 2, // 2 slide untuk tablet
+                spaceBetween: 15
+            },
+            1024: {
+                slidesPerView: 3, // 3 slide untuk desktop
+                spaceBetween: 20
+            }
+        }
+    });
+</script>
 </footer>
 @endif

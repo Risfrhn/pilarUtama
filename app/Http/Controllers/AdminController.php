@@ -268,6 +268,8 @@ class AdminController extends Controller
                 $file->move($folderPath, $fileName);
                 $project->gambarflyer = 'images/projects/' . Str::slug($project->name) . '/' . $fileName; // Menggunakan Str::slug()
             }
+
+            
     
             // Simpan data proyek
             if ($project->save()) {
@@ -298,9 +300,7 @@ class AdminController extends Controller
     #####Update projek
     public function updateProject(Request $request, $status, $id)
     {
-        $project = null; // Declare the $project variable outside try block
         try {
-            // Validasi input
             $request->validate([
                 'name' => 'nullable|string|max:255',
                 'description1' => 'nullable|string|max:10000',
@@ -309,141 +309,114 @@ class AdminController extends Controller
                 'target_pengerjaan_start' => 'nullable|date',
                 'target_pengerjaan_end' => 'nullable|date|after_or_equal:target_pengerjaan_start',
                 'status' => 'nullable|string|max:50',
-                'gambarflyer' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240', // max 10MB
-                'foto_before' => 'nullable|array', // Multiple files
+                'gambarflyer' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
+                'gambarHero' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
+                'foto_before' => 'nullable|array',
                 'foto_before.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
-                'foto_after' => 'nullable|array', // Multiple files
+                'foto_after' => 'nullable|array',
                 'foto_after.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
-                'video' => 'nullable|array', // Multiple files
-                'video.*' => 'nullable|mimes:mp4,mov,avi|max:1048576', // max 10MB for video
+                'video' => 'nullable|array',
+                'video.*' => 'nullable|mimes:mp4,mov,avi|max:1048576',
             ]);
-    
-            // Cari proyek berdasarkan ID
+
             $project = Project::findOrFail($id);
-            
-            // Update hanya jika ada perubahan
-            if ($request->has('name') && $request->name !== $project->name) {
-                $project->name = $request->name;
-            }
-            if ($request->has('description1') && $request->description1 !== $project->description1) {
-                $project->description1 = $request->description1;
-            }
-            if ($request->has('description2') && $request->description2 !== $project->description2) {
-                $project->description2 = $request->description2;
-            }
-            if ($request->has('jenis_projek') && $request->jenis_projek !== $project->jenis_projek) {
-                $project->jenis_projek = $request->jenis_projek;
-            }
-            if ($request->has('target_pengerjaan_start') && $request->target_pengerjaan_start !== $project->target_pengerjaan_start) {
-                $project->target_pengerjaan_start = $request->target_pengerjaan_start;
-            }
-            if ($request->has('target_pengerjaan_end') && $request->target_pengerjaan_end !== $project->target_pengerjaan_end) {
-                $project->target_pengerjaan_end = $request->target_pengerjaan_end;
-            }
-            if ($request->has('status') && $request->status !== $project->status) {
-                $project->status = $request->status;
-            }
-    
-            // Fungsi untuk menyimpan gambar flyer jika ada perubahan
+
+            // Hapus gambar flyer lama jika ada perubahan
             if ($request->hasFile('gambarflyer')) {
+                if ($project->gambarflyer && file_exists(public_path($project->gambarflyer))) {
+                    unlink(public_path($project->gambarflyer));
+                }
                 $file = $request->file('gambarflyer');
-                if ($file->getSize() > 10 * 1024 * 1024) {
-                    return redirect()->route('dashboardAdmin.view')->with('error', 'Ukuran file gambar flyer melebihi batas 10MB!');
-                }
                 $folderPath = public_path('images/projects/' . Str::slug($project->name));
-                if (!file_exists($folderPath)) {
-                    mkdir($folderPath, 0777, true);
-                }
-                $fileName = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $file->getClientOriginalName());
+                if (!file_exists($folderPath)) mkdir($folderPath, 0777, true);
+                $fileName = round(microtime(true) * 1000) . '-' . $file->getClientOriginalName();
                 $file->move($folderPath, $fileName);
                 $project->gambarflyer = 'images/projects/' . Str::slug($project->name) . '/' . $fileName;
             }
-    
-            // Simpan data proyek yang telah diupdate jika ada perubahan
-            if ($project->isDirty()) {
-                $project->save();
+
+            // Hapus gambar hero lama jika ada perubahan
+            if ($request->hasFile('gambarHero')) {
+                if ($project->gambarHero && file_exists(public_path($project->gambarHero))) {
+                    unlink(public_path($project->gambarHero));
+                }
+                $file = $request->file('gambarHero');
+                $folderPath = public_path('images/projects/' . Str::slug($project->name));
+                if (!file_exists($folderPath)) mkdir($folderPath, 0777, true);
+                $fileName = round(microtime(true) * 1000) . '-' . $file->getClientOriginalName();
+                $file->move($folderPath, $fileName);
+                $project->gambarHero = 'images/projects/' . Str::slug($project->name) . '/' . $fileName;
             }
-    
-            // Menyimpan atau mengupdate foto before
+
+            // Hapus dan update foto before
             if ($request->hasFile('foto_before')) {
+                $existingBeforeImages = ProjectBefore::where('project_id', $project->id)->get();
+                foreach ($existingBeforeImages as $image) {
+                    if (file_exists(public_path($image->image))) unlink(public_path($image->image));
+                    $image->delete();
+                }
+
                 foreach ($request->file('foto_before') as $file) {
                     $folderPath = public_path('images/projects/' . Str::slug($project->name) . '/before');
-                    if (!file_exists($folderPath)) {
-                        mkdir($folderPath, 0777, true);
-                    }
-                    $fileName = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $file->getClientOriginalName());
+                    if (!file_exists($folderPath)) mkdir($folderPath, 0777, true);
+                    $fileName = round(microtime(true) * 1000) . '-' . $file->getClientOriginalName();
                     $file->move($folderPath, $fileName);
-    
-                    // Simpan ke tabel project_befores
+
                     $projectBefore = new ProjectBefore();
                     $projectBefore->project_id = $project->id;
                     $projectBefore->image = 'images/projects/' . Str::slug($project->name) . '/before/' . $fileName;
                     $projectBefore->save();
                 }
             }
-    
-            // Menyimpan atau mengupdate foto after
+
+            // Hapus dan update foto after
             if ($request->hasFile('foto_after')) {
+                $existingAfterImages = ProjectAfter::where('project_id', $project->id)->get();
+                foreach ($existingAfterImages as $image) {
+                    if (file_exists(public_path($image->image))) unlink(public_path($image->image));
+                    $image->delete();
+                }
+
                 foreach ($request->file('foto_after') as $file) {
                     $folderPath = public_path('images/projects/' . Str::slug($project->name) . '/after');
-                    if (!file_exists($folderPath)) {
-                        mkdir($folderPath, 0777, true);
-                    }
-                    $fileName = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $file->getClientOriginalName());
+                    if (!file_exists($folderPath)) mkdir($folderPath, 0777, true);
+                    $fileName = round(microtime(true) * 1000) . '-' . $file->getClientOriginalName();
                     $file->move($folderPath, $fileName);
-    
-                    // Simpan ke tabel project_afters
+
                     $projectAfter = new ProjectAfter();
                     $projectAfter->project_id = $project->id;
                     $projectAfter->image = 'images/projects/' . Str::slug($project->name) . '/after/' . $fileName;
                     $projectAfter->save();
                 }
             }
-    
-            
-            // Menyimpan atau mengupdate video (hanya 1 video per proyek)
+
+            // Hapus dan update video (hanya 1 video per proyek)
             if ($request->hasFile('video')) {
-                // Cek apakah proyek sudah memiliki video
                 $existingVideo = ProjectVideo::where('project_id', $project->id)->first();
-                
                 if ($existingVideo) {
-                    return redirect()->route('projectsDetail.view', [
-                        'status' => $project->status,
-                        'id' => $project->id
-                    ])->with('error', 'Proyek ini sudah memiliki video! Hanya satu video yang diperbolehkan.');
+                    if (file_exists(public_path($existingVideo->video))) unlink(public_path($existingVideo->video));
+                    $existingVideo->delete();
                 }
 
-                // Jika belum ada video, simpan yang baru
-                $file = $request->file('video')[0]; // Ambil file pertama saja (karena hanya 1 video diperbolehkan)
+                $file = $request->file('video')[0];
                 $folderPath = public_path('videos/projects/' . Str::slug($project->name));
-
-                if (!file_exists($folderPath)) {
-                    mkdir($folderPath, 0777, true);
-                }
-
-                $fileName = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $file->getClientOriginalName());
+                if (!file_exists($folderPath)) mkdir($folderPath, 0777, true);
+                $fileName = round(microtime(true) * 1000) . '-' . $file->getClientOriginalName();
                 $file->move($folderPath, $fileName);
 
-                // Simpan ke tabel project_videos
                 $projectVideo = new ProjectVideo();
                 $projectVideo->project_id = $project->id;
                 $projectVideo->video = 'videos/projects/' . Str::slug($project->name) . '/' . $fileName;
                 $projectVideo->save();
             }
-    
-            if ($project->status === 'negotiation') {
-                return redirect()->route('projectsNego.view', [
-                    'status' => $project->status,
-                    'id' => $project->id
-                ])->with('success', 'Proyek berhasil diperbarui!');
-            } else {
-                return redirect()->route('projectsDetail.view', [
-                    'status' => $project->status,
-                    'id' => $project->id
-                ])->with('success', 'Proyek berhasil diperbarui!');
+
+            if ($project->isDirty()) {
+                $project->save();
             }
-            
-    
+
+            return redirect()->route('projectsDetail.view', [
+                'status' => $project->status,
+                'id' => $project->id
+            ])->with('success', 'Proyek berhasil diperbarui!');
         } catch (\Exception $e) {
             return redirect()->route('dashboardAdmin.view')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
@@ -668,10 +641,12 @@ class AdminController extends Controller
 
         // **Backup Database**
         $command = [
-            'C:\xampp\mysql\bin\mysqldump.exe',
-            '-u', 'root',
-            'pilarutama'
+            "/usr/bin/mysqldump",
+            '-u', 'satupila_pilarUtama',
+            '-p', 'Wariksmd123',
+            'satupila_pilarUtama'
         ];
+        
 
         $process = new Process($command);
         $process->run();

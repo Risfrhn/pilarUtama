@@ -23,6 +23,9 @@
     <!-- animasi aos -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
+    <!-- swiper js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+
 </head>
 <body class="d-flex flex-column min-vh-100" style="background-color: #EEEBE5">
     
