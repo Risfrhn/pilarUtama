@@ -25,7 +25,26 @@ class AdminController extends Controller
     #LANDING PAGE
     public function showLandingPageAdmin()
     {
-        $modalData = ModalData::all(); 
+        $modalData = ModalData::all();
+
+        if (!$modalData) {
+            $modalData = ModalData::create([
+                'imageflyer'           => null,
+                'gambarAboutUs'        => null,
+                'architecturImage'     => null,
+                'interiorImage'        => null,
+                'landscapeImage'       => null,
+                'renovationImage'      => null,
+                'comercialBuildImage'  => null,
+                'desk1'                => 'Deskripsi umum tentang perusahaan.',
+                'desk2'                => 'Informasi tambahan tentang visi/misi perusahaan.',
+                'architectur_desk'     => 'Deskripsi default untuk layanan arsitektur.',
+                'interior_desk'        => 'Deskripsi default untuk layanan interior.',
+                'landscape_desk'       => 'Deskripsi default untuk layanan landscape.',
+                'renovation_desk'      => 'Deskripsi default untuk layanan renovasi.',
+                'comercial_build_desk' => 'Deskripsi default untuk layanan bangunan komersial.',
+            ]);
+        }
         // Mengambil proyek berdasarkan status
         $finishedProjects = Project::where('status', 'finished')->count();
         $ongoingProjects = Project::where('status', 'ongoing')->count();
@@ -62,11 +81,7 @@ class AdminController extends Controller
             ]);
         
             // Ambil data pertama yang ada (ID 1)
-            $modalData = ModalData::find(1);
-        
-            if (!$modalData) {
-                return redirect()->route('dashboardAdmin.view')->with('error', 'Data tidak ditemukan!');
-            }
+            $modalData = ModalData::first();
         
             // Fungsi untuk menyimpan gambar hanya jika ada file baru dan ukurannya valid
             $saveImage = function ($fieldName, $dbField) use ($request, $modalData) {
@@ -321,6 +336,16 @@ class AdminController extends Controller
 
             $project = Project::findOrFail($id);
 
+            // ✅ Update field teks (pakai data baru kalau ada, kalau kosong tetap lama)
+            $project->name = $request->filled('name') ? $request->name : $project->name;
+            $project->description1 = $request->filled('description1') ? $request->description1 : $project->description1;
+            $project->description2 = $request->filled('description2') ? $request->description2 : $project->description2;
+            $project->jenis_projek = $request->filled('jenis_projek') ? $request->jenis_projek : $project->jenis_projek;
+            $project->target_pengerjaan_start = $request->filled('target_pengerjaan_start') ? $request->target_pengerjaan_start : $project->target_pengerjaan_start;
+            $project->target_pengerjaan_end = $request->filled('target_pengerjaan_end') ? $request->target_pengerjaan_end : $project->target_pengerjaan_end;
+            $project->status = $request->filled('status') ? $request->status : $project->status;
+
+
             // Hapus gambar flyer lama jika ada perubahan
             if ($request->hasFile('gambarflyer')) {
                 if ($project->gambarflyer && file_exists(public_path($project->gambarflyer))) {
@@ -347,17 +372,12 @@ class AdminController extends Controller
                 $project->gambarHero = 'images/projects/' . Str::slug($project->name) . '/' . $fileName;
             }
 
-            // Hapus dan update foto before
+            // Tambah foto before
             if ($request->hasFile('foto_before')) {
-                $existingBeforeImages = ProjectBefore::where('project_id', $project->id)->get();
-                foreach ($existingBeforeImages as $image) {
-                    if (file_exists(public_path($image->image))) unlink(public_path($image->image));
-                    $image->delete();
-                }
-
                 foreach ($request->file('foto_before') as $file) {
                     $folderPath = public_path('images/projects/' . Str::slug($project->name) . '/before');
                     if (!file_exists($folderPath)) mkdir($folderPath, 0777, true);
+
                     $fileName = round(microtime(true) * 1000) . '-' . $file->getClientOriginalName();
                     $file->move($folderPath, $fileName);
 
@@ -368,17 +388,12 @@ class AdminController extends Controller
                 }
             }
 
-            // Hapus dan update foto after
+            // Tambah foto after
             if ($request->hasFile('foto_after')) {
-                $existingAfterImages = ProjectAfter::where('project_id', $project->id)->get();
-                foreach ($existingAfterImages as $image) {
-                    if (file_exists(public_path($image->image))) unlink(public_path($image->image));
-                    $image->delete();
-                }
-
                 foreach ($request->file('foto_after') as $file) {
                     $folderPath = public_path('images/projects/' . Str::slug($project->name) . '/after');
                     if (!file_exists($folderPath)) mkdir($folderPath, 0777, true);
+
                     $fileName = round(microtime(true) * 1000) . '-' . $file->getClientOriginalName();
                     $file->move($folderPath, $fileName);
 

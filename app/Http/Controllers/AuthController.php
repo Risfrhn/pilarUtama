@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\landingModel as ModalData;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,27 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password), // Hash password
         ]);
+        
+        $modalData = ModalData::first(); // Ambil 1 data pertama
+        if (!$modalData) {
+            $modalData = ModalData::create([
+                'imageflyer'           => null,
+                'gambarAboutUs'        => null,
+                'architecturImage'     => null,
+                'interiorImage'        => null,
+                'landscapeImage'       => null,
+                'renovationImage'      => null,
+                'comercialBuildImage'  => null,
+                'desk1'                => 'Deskripsi umum tentang perusahaan.',
+                'desk2'                => 'Informasi tambahan tentang visi/misi perusahaan.',
+                'architectur_desk'     => 'Deskripsi default untuk layanan arsitektur.',
+                'interior_desk'        => 'Deskripsi default untuk layanan interior.',
+                'landscape_desk'       => 'Deskripsi default untuk layanan landscape.',
+                'renovation_desk'      => 'Deskripsi default untuk layanan renovasi.',
+                'comercial_build_desk' => 'Deskripsi default untuk layanan bangunan komersial.',
+            ]);
+        }
+
 
         return redirect()->route('login.form')->with('success', 'Registrasi berhasil! Silakan login.');
     }

@@ -7,7 +7,7 @@
     <div class="position-absolute top-50 start-50 translate-middle text-white text-center" data-aos="fade-up" data-aos-duration="800" data-aos-easing="ease-in-out">
         <h1 style="">{{ $detailProject->name }}</h1>
         <p class="detailProjekHeader fw-light">Kami adalah solusi terbaik untuk menciptakan segala keinginan & kebutuhan konstruksi anda.</p>
-        <button type="button" class="btn detailProjekHeader btn-outline border-2 rounded-5" style="color:#EEEBE5;border-color:#EEEBE5">Lihat Projek</button>
+        <button type="button" class="btn detailProjekHeader btn-outline border-2 rounded-5" style="color:#EEEBE5;border-color:#EEEBE5" onclick="document.getElementById('projekSection').scrollIntoView({ behavior: 'smooth' });">Lihat Projek</button>
     </div>
 </div>
 <div class="container mb-5">
@@ -21,7 +21,7 @@
 
     <div class="row mt-3">
         <div class="col-12">
-            <h1 style="color:#65031D;">Dokumentasi selama <br> projek berjalan</h1>
+            <h1 style="color:#65031D;" id="projekSection">Dokumentasi selama <br> projek berjalan</h1>
             <div class="w-100 border border-1 border-dark mb-3"></div>
         </div>
         <!-- Swiper Container -->
@@ -225,7 +225,7 @@
                                 <label for="status" class="form-label">Status</label>
                                 <select class="form-select" id="status" name="status" value="{{ $detailProject->status }}">
                                     <option value="ongoing" {{ $detailProject->status == 'ongoing' ? 'selected' : '' }}>On going</option>
-                                    <option value="beingDesign" {{ $detailProject->status == 'beingDesign' ? 'selected' : '' }}>Being Design</option>
+                                    <option value="beingDesign" {{ $detailProject->status == 'being_design' ? 'selected' : '' }}>Being Design</option>
                                     <option value="finished" {{ $detailProject->status == 'finished' ? 'selected' : '' }}>Finished</option>
                                     <option value="negotiation" {{ $detailProject->status == 'negotiation' ? 'selected' : '' }}>Negotiation</option>
                                 </select>

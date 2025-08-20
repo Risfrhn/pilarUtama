@@ -12,15 +12,16 @@ class projectModel extends Model
     protected $table = 'projects';
     protected $fillable = [
         'name', 
-        'title1', 
+        // 'title1', 
         'description1', 
-        'title2', 
+        // 'title2', 
         'description2', 
         'jenis_projek', 
         'target_pengerjaan_start',
         'target_pengerjaan_end', 
         'status', 
-        'gambarflyer'
+        'gambarflyer',
+        'gambarHero'
     ];
 
     // Relasi ke tabel project_befores
