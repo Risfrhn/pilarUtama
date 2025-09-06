@@ -22,7 +22,7 @@
         </div>
         
     </div>
-    <img src="{{ $item->flyer_image }}" class="img-fluid mb-5" alt="Deskripsi Gambar">
+    <img src="{{ $item->flyer_image }}" class="img-fluid mb-5" style="width:100%" alt="Deskripsi Gambar">
 
     <!-- tentang kami -->
     <div class="container mt-5 mb-5" id="tentang-kami">
@@ -47,7 +47,7 @@
             <h1 class="mb-0 fst-italic">Our</h1>
             <p class="aboutUs" style="font-size:50px">Services</p>
             <div class="col-12 col-lg-3 d-flex justify-content-center">
-                <img id="layananImage" src="{{ $item->architectur_image }}" class="img-fluid mb-5" alt="Service Image">
+                <img id="layananImage" src="{{ $item->architectur_image }}" class="img-fluid mb-5" style="height: 200px; width:100%" alt="Service Image">
             </div>
             <div class="col-lg-2 mb-lg-0 mb-2">
                 <ul class="nav flex-lg-column flex-row justify-content-center" id="serviceTabs">
