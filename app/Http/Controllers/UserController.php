@@ -18,7 +18,7 @@ class UserController extends Controller
         // Mengambil proyek berdasarkan status
         $finishedProjects = Project::where('status', 'finished')->count();
         $ongoingProjects = Project::where('status', 'ongoing')->count();
-        $designProjects = Project::where('status', 'beingDesign')->count();
+        $designProjects = Project::where('status', 'being_design')->count();
         $negotiationProjects = Project::where('status', 'negotiation')->count();
 
         return view('User.Landing.landingPage', compact(

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('target_pengerjaan_end');
             $table->enum('status', ['ongoing', 'being_design', 'finished', 'negotiation']);
             $table->string('gambarflyer')->nullable();
+            $table->string('gambarHero')->nullable();
             $table->timestamps();
         });
     }

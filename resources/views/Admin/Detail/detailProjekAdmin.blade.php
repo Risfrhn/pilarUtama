@@ -225,7 +225,7 @@
                                 <label for="status" class="form-label">Status</label>
                                 <select class="form-select" id="status" name="status" value="{{ $detailProject->status }}">
                                     <option value="ongoing" {{ $detailProject->status == 'ongoing' ? 'selected' : '' }}>On going</option>
-                                    <option value="beingDesign" {{ $detailProject->status == 'being_design' ? 'selected' : '' }}>Being Design</option>
+                                    <option value="being_design" {{ $detailProject->status == 'being_design' ? 'selected' : '' }}>Being Design</option>
                                     <option value="finished" {{ $detailProject->status == 'finished' ? 'selected' : '' }}>Finished</option>
                                     <option value="negotiation" {{ $detailProject->status == 'negotiation' ? 'selected' : '' }}>Negotiation</option>
                                 </select>

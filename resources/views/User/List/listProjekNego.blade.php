@@ -8,7 +8,7 @@
                     $statusNames = [
                         'finished' => 'Finished Projects',
                         'ongoing' => 'Ongoing Projects',
-                        'beingDesign' => 'Projects Being Designed',
+                        'being_design' => 'Projects Being Designed',
                         'negotiation' => 'Negotiation Stages'
                     ];
                 @endphp

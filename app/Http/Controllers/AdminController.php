@@ -48,7 +48,7 @@ class AdminController extends Controller
         // Mengambil proyek berdasarkan status
         $finishedProjects = Project::where('status', 'finished')->count();
         $ongoingProjects = Project::where('status', 'ongoing')->count();
-        $designProjects = Project::where('status', 'beingDesign')->count();
+        $designProjects = Project::where('status', 'being_design')->count();
         $negotiationProjects = Project::where('status', 'negotiation')->count();
 
         return view('Admin.Landing.landingPageAdmin', compact(
@@ -335,7 +335,7 @@ class AdminController extends Controller
             ]);
 
             $project = Project::findOrFail($id);
-
+dd($project);
             // ✅ Update field teks (pakai data baru kalau ada, kalau kosong tetap lama)
             $project->name = $request->filled('name') ? $request->name : $project->name;
             $project->description1 = $request->filled('description1') ? $request->description1 : $project->description1;
@@ -344,6 +344,7 @@ class AdminController extends Controller
             $project->target_pengerjaan_start = $request->filled('target_pengerjaan_start') ? $request->target_pengerjaan_start : $project->target_pengerjaan_start;
             $project->target_pengerjaan_end = $request->filled('target_pengerjaan_end') ? $request->target_pengerjaan_end : $project->target_pengerjaan_end;
             $project->status = $request->filled('status') ? $request->status : $project->status;
+            
 
 
             // Hapus gambar flyer lama jika ada perubahan

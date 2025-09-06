@@ -124,7 +124,7 @@
 
                 <!-- Projects Being Designed -->
                 <div class="col-6 col-lg-3 g-2">
-                    <a href="{{ route('projects.view', ['status' => 'beingDesign']) }}" style="text-decoration:none;color:black;">
+                    <a href="{{ route('projects.view', ['status' => 'being_design']) }}" style="text-decoration:none;color:black;">
                         <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
                             <h3 class="mt-3" style="color:#65031D;">{{ $designProjects }}+</h3>
                             <p>Projects Being Designed</p>
@@ -381,7 +381,7 @@
                         <label for="status" class="form-label">Status</label>
                         <select class="form-select" id="status" name="status">
                             <option value="ongoing">On going</option>
-                            <option value="beingDesign">Being Design</option>
+                            <option value="being_design">Being Design</option>
                             <option value="finished">Finished</option>
                             <option value="negotiation">Negotiation</option>
                         </select>

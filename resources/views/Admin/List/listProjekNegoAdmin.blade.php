@@ -9,7 +9,7 @@
                     $statusNames = [
                         'finished' => 'Finished Projects',
                         'ongoing' => 'Ongoing Projects',
-                        'beingDesign' => 'Projects Being Designed',
+                        'being_design' => 'Projects Being Designed',
                         'negotiation' => 'Negotiation Stages'
                     ];
                 @endphp
@@ -144,7 +144,7 @@
                                 <label for="status" class="form-label">Status</label>
                                 <select class="form-select" id="status" name="status">
                                     <option value="ongoing" >On going</option>
-                                    <option value="beingDesign">Being Design</option>
+                                    <option value="being_design">Being Design</option>
                                     <option value="finished" >Finished</option>
                                     <option value="negotiation">Negotiation</option>
                                 </select>
@@ -199,7 +199,7 @@
                         <label for="status" class="form-label">Status</label>
                         <select class="form-select" id="status" name="status">
                             <option value="ongoing">On going</option>
-                            <option value="beingDesign">Being Design</option>
+                            <option value="being_design">Being Design</option>
                             <option value="finished">Finished</option>
                             <option value="negotiation">Negotiation</option>
                         </select>

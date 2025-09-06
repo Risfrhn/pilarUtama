@@ -9,7 +9,7 @@
                     $statusNames = [
                         'finished' => 'Finished Projects',
                         'ongoing' => 'Ongoing Projects',
-                        'beingDesign' => 'Projects Being Designed',
+                        'being_design' => 'Projects Being Designed',
                         'negotiation' => 'Negotiation Stages'
                     ];
                 @endphp
@@ -51,7 +51,7 @@
                 <a href="{{ route('projectsDetail.view', ['status' => $project->status, 'id' => $project->id]) }}" class="card-link" style="text-decoration: none;">
                     <div class="card overflow-hidden rounded-4 my-1" style="cursor: pointer;">
                         <!-- Gambar Full dengan Sudut Rounded -->
-                        <img src="{{ asset($project->gambarflyer ?: 'images/no-image.jpg') }}" class="card-img-top" alt="Card Image" style="width: 100%; height: auto; object-fit: cover; aspect-ratio: 2 / 3; ">
+                        <img src="{{ asset($project->gambarflyer ?: 'images/no-image.jpg') }}" class="card-img-top" alt="Card Image" style="height: 500px; object-fit: cover; aspect-ratio: 2 / 3; ">
 
                         <!-- Pojok Kiri Atas (Angka) -->
                         <div class="position-absolute top-0 start-0 text-dark px-3 py-2 rounded-bottom">
@@ -160,7 +160,7 @@
                         <label for="status" class="form-label">Status</label>
                         <select class="form-select" id="status" name="status">
                             <option value="ongoing">On going</option>
-                            <option value="beingDesign">Being Design</option>
+                            <option value="being_design">Being Design</option>
                             <option value="finished">Finished</option>
                             <option value="negotiation">Negotiation</option>
                         </select>

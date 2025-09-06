@@ -123,7 +123,7 @@
 
             <!-- Projects Being Designed -->
             <div class="col-6 col-lg-3 g-2" data-aos="zoom-in" data-aos-duration="800" data-aos-easing="ease-in-sine">
-                <a href="{{ route('projectsUser.view', ['status' => 'beingDesign']) }}" style="text-decoration:none;color:black;">
+                <a href="{{ route('projectsUser.view', ['status' => 'being_design']) }}" style="text-decoration:none;color:black;">
                     <div class="kotak border border-1 border-dark d-flex flex-column justify-content-center align-items-center rounded-4" style="height: 100px;">
                         <h3 class="mt-3" style="color:#65031D;">{{ $designProjects }}+</h3>
                         <p>Projects Being Designed</p>
