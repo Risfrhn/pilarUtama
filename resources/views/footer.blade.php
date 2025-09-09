@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row mt-3">
             <div class="col-lg-4 col-6 text-lg-start text-center">
-                <img src="{{ asset('image/logo2.png') }}" alt="Logo" class="img-fluid" style="max-width: 200px; height: auto;">
+                <img src="{{ asset('image/Logo2.png') }}" alt="Logo" class="img-fluid" style="max-width: 200px; height: auto;">
             </div>
             <div class="col-lg-4 col-6 mt-5 ">
                 <p class="fw-semibold" style="line-height:0.1">Social Media Kami</p>
