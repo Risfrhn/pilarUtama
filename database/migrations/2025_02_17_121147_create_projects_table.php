@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('title2')->nullable();
             $table->text('description2')->nullable();
             $table->string('jenis_projek');
-            $table->date('target_pengerjaan_start');
-            $table->date('target_pengerjaan_end');
+            $table->date('target_pengerjaan_start')->nullable();
+            $table->date('target_pengerjaan_end')->nullable();
             $table->enum('status', ['ongoing', 'being_design', 'finished', 'negotiation']);
             $table->string('gambarflyer')->nullable();
             $table->string('gambarHero')->nullable();

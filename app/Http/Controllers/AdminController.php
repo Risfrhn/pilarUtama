@@ -335,7 +335,7 @@ class AdminController extends Controller
             ]);
 
             $project = Project::findOrFail($id);
-dd($project);
+
             // ✅ Update field teks (pakai data baru kalau ada, kalau kosong tetap lama)
             $project->name = $request->filled('name') ? $request->name : $project->name;
             $project->description1 = $request->filled('description1') ? $request->description1 : $project->description1;

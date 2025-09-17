@@ -349,19 +349,19 @@
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label">Nama</label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <input type="text" class="form-control" id="name"  name="name">
                     </div>
                     <div class="mb-3">
                         <label for="description1" class="form-label">Deskripsi 1</label>
-                        <textarea class="form-control" id="description1" name="description1"></textarea>
+                        <textarea class="form-control" id="description1"  name="description1"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="description2" class="form-label">Deskripsi 2</label>
-                        <textarea class="form-control" id="description2" name="description2"></textarea>
+                        <textarea class="form-control" id="description2"  name="description2"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="jenis_projek" class="form-label">Jenis Proyek</label>
-                        <select class="form-select" id="jenis_projek" name="jenis_projek">
+                        <select class="form-select" id="jenis_projek"  name="jenis_projek">
                             <option value="Architecture">Architecture</option>
                             <option value="Commercial_building">Commercial Building</option>
                             <option value="Interior">Interior</option>
@@ -371,15 +371,15 @@
                     </div>
                     <div class="mb-3">
                         <label for="target_pengerjaan_start" class="form-label">Tanggal Mulai</label>
-                        <input type="date" class="form-control" id="target_pengerjaan_start" name="target_pengerjaan_start">
+                        <input type="date" class="form-control" id="target_pengerjaan_start"  name="target_pengerjaan_start">
                     </div>
                     <div class="mb-3">
                         <label for="target_pengerjaan_end" class="form-label">Tanggal Selesai</label>
-                        <input type="date" class="form-control" id="target_pengerjaan_end" name="target_pengerjaan_end">
+                        <input type="date" class="form-control" id="target_pengerjaan_end"  name="target_pengerjaan_end">
                     </div>
                     <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
-                        <select class="form-select" id="status" name="status">
+                        <select class="form-select" id="status"  name="status">
                             <option value="ongoing">On going</option>
                             <option value="being_design">Being Design</option>
                             <option value="finished">Finished</option>
@@ -388,7 +388,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="gambarflyer" class="form-label">Gambar Flyer</label>
-                        <input type="file" class="form-control" id="gambarflyer" name="gambarflyer">
+                        <input type="file" class="form-control" id="gambarflyer"  name="gambarflyer">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btnClose" data-bs-dismiss="modal">Close</button>

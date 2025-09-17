@@ -30,7 +30,7 @@
                     <div class="position-relative">
                         <img src="{{ asset($projectBefore->image ?: 'images/no-image.jpg') }}" 
                             class="d-block w-100" 
-                            style="min-height: 400px; height: 100%; object-fit: cover;" 
+                            style="min-height: 400px; height: 500px; object-fit: cover;" 
                             alt="Before Image">
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                 @foreach ($projectAfters as $index => $projectAfter)
                     <div class="swiper-slide">
                         <div class="position-relative">
-                            <img src="{{ asset($projectAfter->image ?: 'images/no-image.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 100%; object-fit: cover;" alt="Before Image">
+                            <img src="{{ asset($projectAfter->image ?: 'images/no-image.jpg') }}" class="d-block w-100 h-100" style="min-height: 500px; height: 500px; object-fit: cover;" alt="Before Image">
                         </div>
                     </div>
                 @endforeach
